@@ -54,6 +54,7 @@
     description = "Potat369";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
+    shell = pkgs.fish;
   };
 
   # Enable automatic login for the user.
@@ -73,6 +74,9 @@
     defaultEditor = true;
   };
   programs.git = {
+    enable = true;
+  };
+  programs.fish = {
     enable = true;
   };
   # Some programs need SUID wrappers, can be configured further or are
