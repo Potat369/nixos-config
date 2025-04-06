@@ -68,6 +68,7 @@
   environment.systemPackages = with pkgs; [
     stow
     gh
+    wezterm
   ];
   programs.neovim = {
     enable = true;
