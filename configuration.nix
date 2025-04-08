@@ -5,10 +5,9 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -53,7 +52,7 @@
     isNormalUser = true;
     description = "Potat369";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
     shell = pkgs.fish;
   };
 
@@ -81,12 +80,8 @@
     enable = true;
     defaultEditor = true;
   };
-  programs.git = {
-    enable = true;
-  };
-  programs.fish = {
-    enable = true;
-  };
+  programs.git = { enable = true; };
+  programs.fish = { enable = true; };
   programs.hyprland = {
     withUWSM = true;
     enable = true;
