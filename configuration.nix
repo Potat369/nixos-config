@@ -69,6 +69,13 @@
     stow
     gh
     wezterm
+    socat
+    gcc
+    microsoft-edge
+    nixfmt
+    gnome-tweaks
+    fuzzel
+    brightnessctl
   ];
   programs.neovim = {
     enable = true;
