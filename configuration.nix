@@ -34,7 +34,10 @@
   users.users.potat369 = {
     isNormalUser = true;
     description = "Potat369";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [ ];
     shell = pkgs.fish;
   };
@@ -65,26 +68,34 @@
     enable = true;
     defaultEditor = true;
   };
-  programs.git = { enable = true; };
-  programs.fish = { enable = true; };
+  programs.git = {
+    enable = true;
+  };
+  programs.fish = {
+    enable = true;
+  };
   programs.hyprland = {
     withUWSM = true;
     enable = true;
   };
 
   programs.dconf.profiles.user = {
-    databases = [{
-      lockAll = true;
-      settings = {
-        "org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark";
-          gtk_theme = "Adwaita:dark";
+    databases = [
+      {
+        lockAll = true;
+        settings = {
+          "org/gnome/desktop/interface" = {
+            color-scheme = "prefer-dark";
+            gtk_theme = "Adwaita:dark";
+          };
         };
-      };
-    }];
+      }
+    ];
   };
 
-  hardware.graphics = { enable = true; };
+  hardware.graphics = {
+    enable = true;
+  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
@@ -95,6 +106,8 @@
     };
   };
 
-  environment.variables = { GTK_THEME = "Adwaita:dark"; };
+  environment.variables = {
+    GTK_THEME = "Adwaita:dark";
+  };
   system.stateVersion = "24.11";
 }
