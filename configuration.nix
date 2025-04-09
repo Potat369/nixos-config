@@ -59,7 +59,6 @@
     nixfmt-rfc-style
     gnome-tweaks
     waybar
-    gparted
     lazygit
     fuzzel
     brightnessctl
