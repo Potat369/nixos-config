@@ -39,6 +39,10 @@
     shell = pkgs.fish;
   };
 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "CascadiaMono" ]; })
+  ];
+
   services.getty.autologinUser = "potat369";
 
   nixpkgs.config.allowUnfree = true;
