@@ -45,6 +45,13 @@
     shell = pkgs.fish;
   };
 
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "CascadiaMono" ]; })
   ];
