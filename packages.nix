@@ -6,6 +6,7 @@
     stow
     gh
     wezterm
+    dunst
     gcc
     microsoft-edge
     nixfmt-rfc-style
@@ -18,6 +19,7 @@
     jetbrains.idea-ultimate
     deno
     glfw3-minecraft
+    pavucontrol
   ];
   programs.neovim = {
     enable = true;
