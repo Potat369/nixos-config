@@ -79,7 +79,9 @@
   };
 
   environment.variables = {
-    GTK_THEME = "Adwaita:dark";
+    PATH = [
+      "/home/potat369/.deno/bin"
+    ];
   };
   system.stateVersion = "24.11";
 }
