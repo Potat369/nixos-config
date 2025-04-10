@@ -16,11 +16,14 @@
     jetbrains.webstorm
     jetbrains.rider
     jetbrains.idea-ultimate
+    deno
+    glfw3-minecraft
   ];
   programs.neovim = {
     enable = true;
     defaultEditor = true;
   };
+  programs.java.enable = true;
   programs.git.enable = true;
   programs.fish.enable = true;
   programs.hyprland = {
