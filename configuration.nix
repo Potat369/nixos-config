@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./packages.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -47,36 +50,6 @@
   ];
 
   services.getty.autologinUser = "potat369";
-
-  nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    stow
-    gh
-    wezterm
-    socat
-    gcc
-    microsoft-edge
-    nixfmt-rfc-style
-    gnome-tweaks
-    waybar
-    lazygit
-    fuzzel
-    brightnessctl
-  ];
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-  };
-  programs.git = {
-    enable = true;
-  };
-  programs.fish = {
-    enable = true;
-  };
-  programs.hyprland = {
-    withUWSM = true;
-    enable = true;
-  };
 
   programs.dconf.profiles.user = {
     databases = [
