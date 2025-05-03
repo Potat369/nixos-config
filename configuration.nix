@@ -9,6 +9,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 8 * 1024;
+    }
+  ];
   networking.hostName = "nixos";
 
   networking.networkmanager.enable = true;
@@ -78,7 +84,7 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    open = true;
+    open = false;
     prime = {
       offload = {
         enable = true;
