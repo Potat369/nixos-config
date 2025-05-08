@@ -4,6 +4,12 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     stow
+    aseprite
+    pnpm
+    nodejs
+    prismlauncher
+    discord
+    unityhub
     vlc
     blender
     gh
@@ -13,7 +19,6 @@
     microsoft-edge
     nixd
     nixfmt-rfc-style
-    lazygit
     fuzzel
     brightnessctl
     jetbrains.webstorm
@@ -21,6 +26,11 @@
     jetbrains.idea-ultimate
     dotnet-sdk
     deno
+    stylua
+    rustc
+    rust-analyzer
+    rustfmt
+    cargo
   ];
   programs.neovim = {
     enable = true;
@@ -31,6 +41,7 @@
     enable = true;
     plugins = with pkgs; [ obs-studio-plugins.wlrobs ];
   };
+  programs.noisetorch.enable = true;
   programs.java.enable = true;
   programs.git.enable = true;
   programs.fish.enable = true;
