@@ -96,6 +96,11 @@
     };
   };
 
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   environment.variables = {
     PATH = [
       "/home/potat369/.deno/bin"
