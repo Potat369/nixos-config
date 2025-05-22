@@ -4,14 +4,13 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     stow
-    aseprite
-    pnpm
+    rofi-wayland
+    jq
     nodejs
+    unzip
     prismlauncher
     discord
-    unityhub
     vlc
-    blender
     gh
     wl-clipboard
     wezterm
@@ -31,6 +30,8 @@
     rust-analyzer
     rustfmt
     cargo
+    hyprpaper
+    hyprshot
   ];
   programs.neovim = {
     enable = true;
