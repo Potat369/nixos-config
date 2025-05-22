@@ -59,7 +59,7 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "CascadiaMono" ]; })
+    nerd-fonts.caskaydia-mono
   ];
 
   services.getty.autologinUser = "potat369";
