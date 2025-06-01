@@ -5,24 +5,19 @@
   environment.systemPackages = with pkgs; [
     stow
     rofi-wayland
+    fd
+    unzip
     jq
     nodejs
-    unzip
-    prismlauncher
+    lua-language-server
     discord
-    vlc
-    gh
     wl-clipboard
     wezterm
     gcc
     microsoft-edge
+    gh
     nixd
     nixfmt-rfc-style
-    fuzzel
-    brightnessctl
-    jetbrains.webstorm
-    jetbrains.rider
-    jetbrains.idea-ultimate
     dotnet-sdk
     deno
     stylua
@@ -31,18 +26,13 @@
     rustfmt
     cargo
     hyprpaper
-    hyprshot
   ];
   programs.neovim = {
     enable = true;
     defaultEditor = true;
   };
   programs.steam.enable = true;
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs; [ obs-studio-plugins.wlrobs ];
-  };
-  programs.noisetorch.enable = true;
+  programs.obs-studio.enable = true;
   programs.java.enable = true;
   programs.git.enable = true;
   programs.fish.enable = true;
