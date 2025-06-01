@@ -110,6 +110,7 @@
     PATH = [
       "/home/potat369/.deno/bin"
     ];
+    HYPRSHOT_DIR = "/home/potat369/Pictures/Screenshots";
   };
   system.stateVersion = "24.11";
 }
