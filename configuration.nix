@@ -83,7 +83,10 @@
     enable = true;
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [
+    "intel"
+    "nvidia"
+  ];
   hardware.nvidia = {
     open = false;
     prime = {
