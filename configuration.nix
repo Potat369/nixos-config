@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./packages.nix
-  ];
   services.upower.enable = true;
 
   boot.loader.systemd-boot.enable = true;
