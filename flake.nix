@@ -11,7 +11,11 @@
     };
   };
   outputs =
-    inputs@{ self, nixpkgs, ... }:
+    inputs@{
+      self,
+      nixpkgs,
+      ...
+    }:
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         modules = [
@@ -20,6 +24,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.users.potat369 = ./home.nix;
           }
           ./hardware-configuration.nix
           ./packages.nix

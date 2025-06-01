@@ -12,9 +12,7 @@
     lua-language-server
     discord
     wl-clipboard
-    wezterm
     gcc
-    microsoft-edge
     gh
     nixd
     nixfmt-rfc-style
@@ -25,7 +23,6 @@
     rust-analyzer
     rustfmt
     cargo
-    hyprpaper
   ];
   programs.neovim = {
     enable = true;

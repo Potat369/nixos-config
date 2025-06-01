@@ -61,18 +61,16 @@
 
   services.getty.autologinUser = "potat369";
 
-  programs.dconf.profiles.user = {
-    databases = [
-      {
-        lockAll = true;
-        settings = {
-          "org/gnome/desktop/interface" = {
-            color-scheme = "prefer-dark";
-            gtk_theme = "Adwaita:dark";
-          };
-        };
-      }
-    ];
+  stylix = {
+    enable = true;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa-dragon.yaml";
+    fonts = {
+      sizes.popups = 13;
+      monospace = {
+        package = pkgs.nerd-fonts.caskaydia-mono;
+        name = "CaskaydiaMono NF";
+      };
+    };
   };
 
   hardware.graphics = {
