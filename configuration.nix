@@ -104,6 +104,7 @@
     "nix-command"
     "flakes"
   ];
+  nix.settings.auto-optimise-store = true;
 
   environment.variables = {
     PATH = [
