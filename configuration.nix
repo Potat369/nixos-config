@@ -56,7 +56,7 @@
   };
 
   fonts.packages = with pkgs; [
-    nerd-fonts.caskaydia-mono
+    nerd-fonts.fira-mono
   ];
 
   services.getty.autologinUser = "potat369";
@@ -64,11 +64,14 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa-dragon.yaml";
+    image = ./wallpapers.jpg;
+    override = {
+      base00 = "181616";
+    };
     fonts = {
       sizes.popups = 13;
       monospace = {
-        package = pkgs.nerd-fonts.caskaydia-mono;
-        name = "CaskaydiaMono NF";
+        package = pkgs.nerd-fonts.fira-mono;
       };
     };
   };

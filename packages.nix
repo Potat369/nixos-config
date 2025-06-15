@@ -5,6 +5,8 @@
   environment.systemPackages = with pkgs; [
     stow
     rofi-wayland
+    microsoft-edge
+    direnv
     fd
     unzip
     jq
@@ -17,7 +19,6 @@
     nixd
     nixfmt-rfc-style
     dotnet-sdk
-    deno
     stylua
     rustc
     rust-analyzer
@@ -32,9 +33,20 @@
   programs.obs-studio.enable = true;
   programs.java.enable = true;
   programs.git.enable = true;
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      if not uwsm check is-active; and uwsm check may-start
+          exec uwsm start hyprland-uwsm.desktop
+      end
+
+      set -U fish_greeting
+      set -g fish_color_autosuggestion "#625e5a"
+    '';
+  };
   programs.hyprland = {
     withUWSM = true;
     enable = true;
   };
+  programs.noisetorch.enable = true;
 }
