@@ -24,6 +24,17 @@
     };
   };
 
+  programs.git = {
+    enable = true;
+    userName = "Potat369";
+    userEmail = "yevheniidemian@gmail.com";
+    aliases = {
+      cm = "commit -m";
+    };
+    extraConfig = {
+      credential."https://github.com".helper = "!/run/current-system/sw/bin/gh auth git-credential";
+    };
+  };
   programs.wezterm = {
     enable = true;
     extraConfig = ''
