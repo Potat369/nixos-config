@@ -3,10 +3,8 @@
 {
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    stow
     rofi-wayland
     microsoft-edge
-    direnv
     fd
     unzip
     jq
@@ -30,6 +28,10 @@
     defaultEditor = true;
   };
   programs.steam.enable = true;
+  programs.direnv = {
+    enable = true;
+    enableFishIntegration = true;
+  };
   programs.obs-studio.enable = true;
   programs.java.enable = true;
   programs.git.enable = true;
