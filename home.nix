@@ -9,12 +9,24 @@
   home.username = "potat369";
   home.homeDirectory = "/home/potat369";
   home.stateVersion = "25.05";
+  home.enableNixpkgsReleaseCheck = false;
+  stylix.enableReleaseChecks = false;
 
   stylix = {
     enable = true;
   };
 
+  xdg.desktopEntries = {
+    open-any-app = {
+      name = "Open Any App";
+      exec = "fish ${./scripts/open-any-app.fish}";
+      terminal = false;
+    };
+  };
+
   home.file.".config/nvim".source = inputs.nvim-config;
+  home.file."projects/tmodloader".source =
+    config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 
   programs.rofi = {
     enable = true;
@@ -157,7 +169,7 @@
       bind = $mainMod, R, exec, $menu
       bind = $mainMod, P, pseudo,
       bind = $mainMod, J, togglesplit,
-      bind = $mainMod, SLASH, exec, nix develop nixpkgs##hyprshot --command hyprshot -m output
+      bind = $mainMod, SLASH, exec, nix run nixpkgs##hyprshot -- -m output
       bind = $mainMod, SEMICOLON, exec, nix run nixpkgs##hyprshot -- -m region
 
       binde = $mainMod_SHIFT, right, resizeactive, 40 0

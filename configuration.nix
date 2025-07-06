@@ -5,6 +5,13 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+    extraModprobeConfig = ''
+      options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    '';
+  };
+  security.polkit.enable = true;
 
   swapDevices = [
     {
@@ -64,7 +71,7 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa-dragon.yaml";
-    image = ./wallpapers.jpg;
+    image = ./wallpaper.jpg;
     override = {
       base00 = "181616";
     };
@@ -81,7 +88,6 @@
   };
 
   services.xserver.videoDrivers = [
-    "intel"
     "nvidia"
   ];
   hardware.nvidia = {
@@ -102,6 +108,11 @@
     "flakes"
   ];
   nix.settings.auto-optimise-store = true;
+
+  documentation = {
+    nixos.enable = false;
+    man.generateCaches = false;
+  };
 
   environment.variables = {
     PATH = [
