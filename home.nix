@@ -24,7 +24,7 @@
     };
   };
 
-  home.file.".config/nvim".source = inputs.nvim-config;
+  # home.file.".config/nvim".source = inputs.nvim-config;
   home.file."projects/tmodloader".source =
     config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 

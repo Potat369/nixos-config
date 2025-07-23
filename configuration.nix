@@ -88,6 +88,7 @@
   };
 
   services.xserver.videoDrivers = [
+    "modesetting"
     "nvidia"
   ];
   hardware.nvidia = {
@@ -118,7 +119,7 @@
     PATH = [
       "/home/potat369/.deno/bin"
     ];
-    HYPRSHOT_DIR = "/home/potat369/Pictures/Screenshots";
+    HYPRSHOT_DIR = "/home/potat369/Images/Screenshots";
   };
   system.stateVersion = "24.11";
 }

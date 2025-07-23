@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   nixpkgs.config.allowUnfree = true;
@@ -10,8 +14,8 @@
     jq
     lua-language-server
     discord
-    jetbrains.rider
-    jetbrains.idea-ultimate
+    #    jetbrains.rider
+    #  jetbrains.idea-ultimate
     aseprite
     wl-clipboard
     gcc
@@ -20,10 +24,7 @@
     nixfmt-rfc-style
     dotnet-sdk
     stylua
-    rustc
-    rust-analyzer
-    rustfmt
-    cargo
+    avalonia-ilspy
   ];
   programs.neovim = {
     enable = true;
@@ -61,4 +62,5 @@
     enable = true;
   };
   programs.noisetorch.enable = true;
+  services.flatpak.enable = true;
 }

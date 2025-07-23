@@ -1,12 +1,13 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    v24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
     nvim-config = {
       url = "github:Potat369/nvim-config";
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
@@ -19,12 +20,12 @@
       self,
       nixpkgs,
       ...
-    }: 
+    }:
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-	specialArgs = {
-	    inherit inputs;
-	  };
+        specialArgs = {
+          inherit inputs;
+        };
         modules = [
 
           inputs.stylix.nixosModules.stylix
@@ -33,7 +34,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.potat369 = ./home.nix;
-	    home-manager.extraSpecialArgs = { inherit inputs; system = "x86_64-linux";};
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              system = "x86_64-linux";
+            };
           }
           ./hardware-configuration.nix
           ./packages.nix
