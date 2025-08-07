@@ -14,7 +14,7 @@
     jq
     lua-language-server
     discord
-    #    jetbrains.rider
+    #jetbrains.rider
     #  jetbrains.idea-ultimate
     aseprite
     wl-clipboard
@@ -25,7 +25,9 @@
     dotnet-sdk
     stylua
     avalonia-ilspy
+    ripgrep
   ];
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;

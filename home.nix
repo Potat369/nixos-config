@@ -60,6 +60,17 @@
             top = 0,
             bottom = 0,
           },
+          keys = {
+            {key="1", mods="ALT", action=wezterm.action.ActivateTab(0)},
+            {key="2", mods="ALT", action=wezterm.action.ActivateTab(1)},
+            {key="3", mods="ALT", action=wezterm.action.ActivateTab(2)},
+            {key="4", mods="ALT", action=wezterm.action.ActivateTab(3)},
+            {key="5", mods="ALT", action=wezterm.action.ActivateTab(4)},
+            {key="6", mods="ALT", action=wezterm.action.ActivateTab(5)},
+            {key="7", mods="ALT", action=wezterm.action.ActivateTab(6)},
+            {key="8", mods="ALT", action=wezterm.action.ActivateTab(7)},
+            {key="9", mods="ALT", action=wezterm.action.ActivateTab(8)},
+          },
       }
     '';
   };
@@ -97,8 +108,6 @@
 
       env = XCURSOR_SIZE,16
       env = HYPRCURSOR_SIZE,16
-
-      exec-once = nix run github:Potat369/potato-shell/master
 
       general {
           gaps_in = 2
@@ -153,7 +162,7 @@
               natural_scroll = false
           }
       }
-
+      debug:full_cm_proto=true
       gestures {
           workspace_swipe = false
       }

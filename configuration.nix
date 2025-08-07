@@ -55,6 +55,19 @@
     shell = pkgs.fish;
   };
 
+  programs.dconf.profiles.potat369 = {
+    databases = [
+      {
+        lockAll = true;
+        settings = {
+          "org/gnome/desktop/interface" = {
+            color-scheme = "prefer-dark";
+          };
+        };
+      }
+    ];
+  };
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -71,7 +84,6 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa-dragon.yaml";
-    image = ./wallpaper.jpg;
     override = {
       base00 = "181616";
     };
@@ -121,5 +133,8 @@
     ];
     HYPRSHOT_DIR = "/home/potat369/Images/Screenshots";
   };
+
+  services.thermald.enable = true;
+
   system.stateVersion = "24.11";
 }
