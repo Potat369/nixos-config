@@ -15,7 +15,7 @@
     lua-language-server
     discord
     #jetbrains.rider
-    #  jetbrains.idea-ultimate
+    jetbrains.idea-ultimate
     aseprite
     wl-clipboard
     gcc
@@ -36,6 +36,7 @@
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
+    silent = true;
   };
   programs.obs-studio = {
     enable = true;
