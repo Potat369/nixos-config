@@ -31,9 +31,14 @@
       };
     in
     {
-      templates.shell = {
-        path = ./shell;
-        description = "Shell Template";
+      templates.devShell = {
+        path = ./shells/devShell;
+        description = "Dev Shell Template";
+      };
+
+      templates.python = {
+        path = ./shells/python;
+        description = "Python Template";
       };
 
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
