@@ -14,7 +14,6 @@
 
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
     theme = "Arc-Dark";
     plugins = with pkgs; [ rofi-calc ];
     extraConfig = {
@@ -24,14 +23,18 @@
 
   programs.git = {
     enable = true;
-    userName = "Potat369";
-    userEmail = "yevheniidemian@gmail.com";
-    aliases = {
-      tree = "log --oneline --graph --decorate --all";
-      cm = "commit -m";
-    };
-    extraConfig = {
-      credential."https://github.com".helper = "!/run/current-system/sw/bin/gh auth git-credential";
+    settings = {
+      user = {
+        name = "Potat369";
+        email = "yevheniidemian@gmail.com";
+      };
+      alias = {
+        tree = "log --oneline --graph --decorate --all";
+        cm = "commit -m";
+      };
+      credential."https://github.com" = {
+        helper = "!/run/current-system/sw/bin/gh auth git-credential";
+      };
     };
   };
   programs.wezterm = {
@@ -112,26 +115,20 @@
 
   services.hyprsunset = {
     enable = true;
-    transitions = {
-      sunrise = {
-        calendar = "*-*-* 06:00:00";
-        requests = [
-          [
-            "temperature"
-            "6500"
-          ]
-          [ "gamma 100" ]
-        ];
-      };
-      sunset = {
-        calendar = "*-*-* 19:00:00";
-        requests = [
-          [
-            "temperature"
-            "4500"
-          ]
-        ];
-      };
+    settings = {
+      max-gamma = 150;
+
+      profile = [
+        {
+          time = "6:00";
+          identity = true;
+        }
+        {
+          time = "19:00";
+          temperature = 4500;
+          gamma = 0.8;
+        }
+      ];
     };
   };
 
@@ -139,31 +136,37 @@
     enable = true;
     # systemdTarget = "hyprland-session.target";
 
-    profiles = {
-      undocked = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-            scale = 1.0;
-            status = "enable";
-            mode = "1920x1080@144";
-          }
-        ];
-      };
+    settings = [
+      {
+        profile = {
+          name = "docked";
+          outputs = [
+            {
+              criteria = "HDMI-A-2";
+              mode = "2560x1440@60Hz";
+            }
+            {
+              criteria = "eDP-1";
+              status = "disable";
+            }
+          ];
+        };
+      }
+      {
+        profile = {
+          name = "undocked";
+          outputs = [
 
-      docked = {
-        outputs = [
-          {
-            criteria = "HDMI-A-2";
-            mode = "2560x1440@60Hz";
-          }
-          {
-            criteria = "eDP-1";
-            status = "disable";
-          }
-        ];
-      };
-    };
+            {
+              criteria = "eDP-1";
+              scale = 1.0;
+              status = "enable";
+              mode = "1920x1080@144";
+            }
+          ];
+        };
+      }
+    ];
   };
 
   wayland.windowManager.hyprland = {
@@ -245,9 +248,6 @@
         }
 
         debug:full_cm_proto=true
-        gestures {
-            workspace_swipe = false
-        }
 
         $mainMod = SUPER 
 
