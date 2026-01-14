@@ -16,7 +16,7 @@
           [
             python313
           ]
-          ++ (with pkgs.python13Packages; [ ]);
+          ++ (with pkgs.python313Packages; [ ]);
       };
     };
 }

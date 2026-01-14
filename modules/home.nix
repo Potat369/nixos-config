@@ -73,6 +73,7 @@
         	font = wezterm.font("DejaVu Sans Mono"),
         	force_reverse_video_cursor = true,
         	use_fancy_tab_bar = false,
+          tab_max_width = 100,
         	window_padding = {
         		left = 0,
         		right = 0,
