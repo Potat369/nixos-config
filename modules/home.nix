@@ -68,7 +68,7 @@
         	}
         end)
 
-        return {
+        local config = {
         	font_size = 13,
         	font = wezterm.font("DejaVu Sans Mono"),
         	force_reverse_video_cursor = true,
@@ -92,6 +92,11 @@
         		{ key = "9", mods = "ALT", action = wezterm.action.ActivateTab(8) },
         	},
         }
+
+        local sessions = wezterm.plugin.require("https://github.com/abidibo/wezterm-sessions")
+        sessions.apply_to_config(config)
+
+        return config
       '';
   };
 

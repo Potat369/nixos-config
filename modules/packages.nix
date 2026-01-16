@@ -30,7 +30,6 @@ in
     # Terminal Tools
     unzip
     brightnessctl
-    ddcutil
     btop
     bluetuith
     git
@@ -102,10 +101,14 @@ in
       repo = "https://github.com/Potat369/nvim-config";
       user = user;
     };
+    ddcutil = {
+      enable = true;
+      runAsSudo = true;
+    };
     idea = {
       enable = true;
       patchedMinecraftEntry = true;
-      package = unstable-small.jetbrains.idea-ultimate;
+      package = unstable-small.jetbrains.idea;
     };
     java.enable = true;
     rider = {

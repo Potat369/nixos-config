@@ -19,6 +19,8 @@
       "chatgpt.com"
       "chat.deepseek.com"
       "grok.com"
+      "claude.ai"
+      "gemini.google.com"
     ];
   };
 
@@ -61,5 +63,9 @@
       }
     ];
   };
+
+  security.sudo.configFile = ''
+
+  '';
   hardware.i2c.enable = true;
 }
