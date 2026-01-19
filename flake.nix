@@ -8,7 +8,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-    hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
     treesitter.url = "github:tree-sitter/tree-sitter";
   };
   outputs =
@@ -54,7 +53,6 @@
         modules = [
           ./hosts/laptop
           inputs.nix-flatpak.nixosModules.nix-flatpak
-          inputs.hyprdynamicmonitors.nixosModules.default
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

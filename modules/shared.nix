@@ -34,7 +34,7 @@
     nixos.enable = false;
     man.generateCaches = false;
   };
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
   networking.networkmanager.enable = true;
   services.pipewire = {
     enable = true;

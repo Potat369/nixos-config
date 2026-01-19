@@ -21,7 +21,6 @@ in
     aseprite
     dunst
     wl-clipboard
-    obsidian
 
     # Hyprland
     hypridle
@@ -35,13 +34,8 @@ in
     git
     gh
     ripgrep
-    gcc
 
     # Language Tools
-    nil
-    nixfmt-rfc-style
-    lua-language-server
-    stylua
     (
       with dotnetCorePackages;
       combinePackages [
@@ -49,8 +43,6 @@ in
         dotnet_8.sdk
       ]
     )
-    inputs.treesitter.packages.${system}.cli
-    inputs.hyprdynamicmonitors.packages.${system}.default
   ];
 
   programs = {
@@ -87,6 +79,10 @@ in
           function npm --wraps=npm
             pnpm $argv
           end
+
+          function ddcutil --wraps=ddcutil
+            sudo command ddcutil $argv
+          end
         '';
       promptInit = # fish
         ''
@@ -98,6 +94,34 @@ in
     neovim = {
       enable = true;
       defaultEditor = true;
+      package =
+        (pkgs.symlinkJoin {
+          name = "neovim-wrap";
+          paths = [
+            pkgs.neovim-unwrapped
+          ];
+          buildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/nvim \
+              --prefix PATH : ${
+                lib.makeBinPath (
+                  with pkgs;
+                  [
+                    inputs.treesitter.packages.${system}.cli
+                    nil
+                    nixfmt-rfc-style
+                    lua-language-server
+                    gcc
+                    stylua
+                  ]
+                )
+              }
+          '';
+        })
+        // {
+          lua = pkgs.neovim-unwrapped.lua;
+          inherit (pkgs.neovim-unwrapped) meta;
+        };
       repo = "https://github.com/Potat369/nvim-config";
       user = user;
     };
@@ -135,22 +159,6 @@ in
           origin = "flathub";
         }
       ];
-    };
-    hyprdynamicmonitors = {
-      enable = false;
-      mode = "user";
-      config = ''
-        [profiles.laptop_only]
-        config_file = "hyprconfigs/laptop.conf"
-        config_file_type = "static"
-
-        [[profiles.laptop_only.conditions.required_monitors]]
-        name = "eDP-1"
-      '';
-      extraFiles = {
-        "xdg/hyprdynamicmonitors/hyprconfigs" = ./hyprconfigs/laptop.conf;
-      };
-      extraFlags = [ "--debug" ];
     };
     upower.enable = true;
   };
