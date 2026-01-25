@@ -21,6 +21,7 @@ in
     aseprite
     dunst
     wl-clipboard
+    protonvpn-gui
 
     # Hyprland
     hypridle
@@ -94,34 +95,14 @@ in
     neovim = {
       enable = true;
       defaultEditor = true;
-      package =
-        (pkgs.symlinkJoin {
-          name = "neovim-wrap";
-          paths = [
-            pkgs.neovim-unwrapped
-          ];
-          buildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/nvim \
-              --prefix PATH : ${
-                lib.makeBinPath (
-                  with pkgs;
-                  [
-                    inputs.treesitter.packages.${system}.cli
-                    nil
-                    nixfmt-rfc-style
-                    lua-language-server
-                    gcc
-                    stylua
-                  ]
-                )
-              }
-          '';
-        })
-        // {
-          lua = pkgs.neovim-unwrapped.lua;
-          inherit (pkgs.neovim-unwrapped) meta;
-        };
+      wrapWithPackages = with pkgs; [
+        inputs.treesitter.packages.${system}.cli
+        nil
+        nixfmt-rfc-style
+        lua-language-server
+        gcc
+        stylua
+      ];
       repo = "https://github.com/Potat369/nvim-config";
       user = user;
     };
