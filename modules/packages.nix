@@ -21,11 +21,11 @@ in
     aseprite
     dunst
     wl-clipboard
-    protonvpn-gui
 
     # Hyprland
     hypridle
     hyprshot
+    hyprsunset
 
     # Terminal Tools
     unzip

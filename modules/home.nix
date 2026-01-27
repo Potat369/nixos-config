@@ -119,24 +119,21 @@
     };
   };
 
-  services.hyprsunset = {
-    enable = true;
-    settings = {
-      max-gamma = 150;
+  xdg.configFile."hypr/hyprsunset.conf".text = ''
+    max-gamma = 150
 
-      profile = [
-        {
-          time = "6:00";
-          identity = true;
-        }
-        {
-          time = "19:00";
-          temperature = 4500;
-          gamma = 0.9;
-        }
-      ];
-    };
-  };
+    profile = [
+      {
+        time = "6:00";
+        identity = true;
+      }
+      {
+        time = "19:00";
+        temperature = 4500;
+        gamma = 1;
+      }
+    ]
+  '';
 
   services.kanshi = {
     enable = true;
@@ -193,6 +190,7 @@
         env = HYPRSHOT_DIR,$HOME/Pictures
 
         exec-once = dunst
+        exec-once = hyprsunset
 
         general {
             gaps_in = 2
