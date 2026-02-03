@@ -80,10 +80,6 @@ in
           function npm --wraps=npm
             pnpm $argv
           end
-
-          function ddcutil --wraps=ddcutil
-            sudo command ddcutil $argv
-          end
         '';
       promptInit = # fish
         ''
@@ -115,7 +111,10 @@ in
       patchedMinecraftEntry = true;
       package = unstable-small.jetbrains.idea;
     };
-    java.enable = true;
+    java = {
+      enable = true;
+      package = pkgs.jdk25;
+    };
     rider = {
       enable = true;
       patchedTMLEntry = true;

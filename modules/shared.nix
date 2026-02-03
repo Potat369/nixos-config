@@ -20,6 +20,7 @@
       "chat.deepseek.com"
       "grok.com"
       "claude.ai"
+      "copilot.microsoft.com"
       "gemini.google.com"
     ];
   };

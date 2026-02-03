@@ -34,7 +34,6 @@ in
     enable = lib.mkEnableOption "";
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.jetbrains.idea-ultimate;
       description = "";
     };
     patchedMinecraftEntry = lib.mkEnableOption "";
@@ -49,8 +48,8 @@ in
           Version=1.0
           Type=Application
           Name=Minecraft Development
-          Icon=${cfg.package}/idea-ultimate/bin/idea.svg
-          Exec=nix-shell ${shell} --run idea-ultimate
+          Icon=${cfg.package}/idea/bin/idea.svg
+          Exec=nix-shell ${shell} --run idea
           Comment=Patched intellij idea for minecraft development
           Categories=Development;IDE;
           Terminal=false
