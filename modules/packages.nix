@@ -29,6 +29,7 @@ in
 
     # Terminal Tools
     unzip
+    socat
     brightnessctl
     btop
     bluetuith
@@ -40,7 +41,6 @@ in
     (
       with dotnetCorePackages;
       combinePackages [
-        dotnet_9.sdk
         dotnet_8.sdk
       ]
     )

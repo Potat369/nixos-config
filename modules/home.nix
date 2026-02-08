@@ -74,6 +74,7 @@
         	force_reverse_video_cursor = true,
         	use_fancy_tab_bar = false,
           tab_max_width = 100,
+          status_update_interval = 500,
         	window_padding = {
         		left = 0,
         		right = 0,
@@ -92,9 +93,6 @@
         		{ key = "9", mods = "ALT", action = wezterm.action.ActivateTab(8) },
         	},
         }
-
-        local sessions = wezterm.plugin.require("https://github.com/abidibo/wezterm-sessions")
-        sessions.apply_to_config(config)
 
         return config
       '';
@@ -135,51 +133,13 @@
     ]
   '';
 
-  services.kanshi = {
-    enable = true;
-    # systemdTarget = "hyprland-session.target";
-
-    settings = [
-      {
-        profile = {
-          name = "docked";
-          outputs = [
-            {
-              criteria = "HDMI-A-2";
-              mode = "2560x1440@60Hz";
-            }
-            {
-              criteria = "eDP-1";
-              status = "disable";
-            }
-          ];
-        };
-      }
-      {
-        profile = {
-          name = "undocked";
-          outputs = [
-
-            {
-              criteria = "eDP-1";
-              scale = 1.0;
-              status = "enable";
-              mode = "1920x1080@144";
-            }
-          ];
-        };
-      }
-    ];
-  };
-
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.variables = [ "--all" ];
     extraConfig = # hyprlang
       ''
-        # monitor=eDP-1,1920x1080@144,0x0,1
-        # monitor=HDMI-A-2,2560x1440@144,0x0,1
-        # monitor=,preferred,0x0,auto
+        monitor=eDP-1,1920x1080@144,auto,1,
+        monitor=HDMI-A-2,2560x1440@60,auto,1
 
         $terminal = uwsm app -- wezterm
         $menu = rofi -show drun -run-command "uwsm app -- {cmd}"
@@ -226,6 +186,7 @@
             vfr = true
             enable_anr_dialog = false
             background_color = 0x000
+            disable_autoreload = true
         }
 
         xwayland:force_zero_scaling = true
@@ -325,8 +286,8 @@
         bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
         bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
 
-        # bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
-        # bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, 0x0, 1"
+        bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
+        bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
 
         bindl = , XF86AudioNext, exec, playerctl next
         bindl = , XF86AudioPause, exec, playerctl play-pause
