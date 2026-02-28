@@ -24,6 +24,9 @@
   programs.git = {
     enable = true;
     settings = {
+      init = {
+        defaultBranch = "main";
+      };
       user = {
         name = "Potat369";
         email = "yevheniidemian@gmail.com";

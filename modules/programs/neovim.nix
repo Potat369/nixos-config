@@ -30,9 +30,7 @@ in
     programs.neovim.package = lib.mkForce (
       (pkgs.symlinkJoin {
         name = "neovim-wrap";
-        paths = [
-          cfg.neovimPackage
-        ];
+        paths = [ cfg.neovimPackage ];
         buildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
           wrapProgram $out/bin/nvim \

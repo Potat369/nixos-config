@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.dejavu-sans-mono
-  ];
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      nerd-fonts.dejavu-sans-mono
+    ];
+  };
 }

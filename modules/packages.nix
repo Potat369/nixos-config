@@ -37,16 +37,13 @@ in
     gh
     ripgrep
 
-    # Language Tools
-    (
-      with dotnetCorePackages;
-      combinePackages [
-        dotnet_8.sdk
-      ]
-    )
   ];
 
   programs = {
+    dotnet = {
+      enable = true;
+      sdks = with pkgs.dotnetCorePackages; [ sdk_8_0-bin ];
+    };
     obs-studio = {
       enable = true;
       package = pkgs.obs-studio.override {
@@ -98,13 +95,13 @@ in
         lua-language-server
         gcc
         stylua
+        roslyn-ls
       ];
       repo = "https://github.com/Potat369/nvim-config";
       user = user;
     };
     ddcutil = {
       enable = true;
-      runAsSudo = true;
     };
     idea = {
       enable = true;
