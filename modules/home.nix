@@ -44,21 +44,6 @@
     enable = true;
     extraConfig = # lua
       ''
-        wezterm.on("update-right-status", function(window, pane)
-        	local cwd_uri = pane:get_current_working_dir()
-        	local cwd = cwd_uri.file_path
-
-        	local success, stdout, stderr = wezterm.run_child_process({ "git", "-C", cwd, "branch", "--show-current" })
-
-        	if success then
-        		window:set_right_status(wezterm.format({
-        			{ Text = string.format("%s %s", wezterm.nerdfonts.dev_git, stdout:sub(1, #stdout - 1)) },
-        		}))
-        	else
-        		window:set_right_status("")
-        	end
-        end)
-
         wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
         	local process_name = tab.active_pane.foreground_process_name or ""
         	process_name = process_name:match("([^/\\]+)$") or process_name

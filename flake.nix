@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-old.url = "github:NixOS/nixpkgs/1327e798cb055f96f92685df444e9a2c326ab5ed";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable-small.url = "github:Nixos/nixpkgs/nixos-unstable-small";
     home-manager = {
@@ -28,6 +29,10 @@
         system = system;
         config.allowUnfree = true;
       };
+      old = import inputs.nixpkgs-old {
+        system = system;
+        config.allowUnfree = true;
+      };
     in
     {
       templates.devShell = {
@@ -46,6 +51,7 @@
           inherit
             unstable
             unstable-small
+            old
             inputs
             system
             ;

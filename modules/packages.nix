@@ -6,6 +6,7 @@
   unstable-small,
   inputs,
   system,
+  old,
   ...
 }:
 let
@@ -17,7 +18,7 @@ in
     discord
     prismlauncher
     libreoffice-qt6-fresh
-    microsoft-edge
+    old.microsoft-edge
     aseprite
     dunst
     wl-clipboard
@@ -36,7 +37,6 @@ in
     git
     gh
     ripgrep
-
   ];
 
   programs = {

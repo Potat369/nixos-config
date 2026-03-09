@@ -17,6 +17,8 @@
   networking.hosts = {
     "10.0.0.1" = [
       "chatgpt.com"
+      "deepai.org"
+      "duck.ai"
       "chat.deepseek.com"
       "grok.com"
       "claude.ai"
@@ -65,8 +67,5 @@
     ];
   };
 
-  security.sudo.configFile = ''
-
-  '';
   hardware.i2c.enable = true;
 }
