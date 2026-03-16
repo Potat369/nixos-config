@@ -7,6 +7,7 @@
       "networkmanager"
       "wheel"
       "dialout"
+      "i2c"
     ];
     shell = pkgs.fish;
   };

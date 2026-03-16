@@ -218,6 +218,9 @@
         bind = $mainMod, SLASH, exec, hyprshot -z -m output
         bind = $mainMod, PERIOD, exec, hyprshot -z -m region
 
+        bind = $mainMod, O, exec, dunstctl history-pop
+        bind = $mainMod, I, exec, dunstctl close-all
+
         bind = $mainMod, T, exec, hyprctl switchxkblayout all next
 
         binde = $mainMod_SHIFT, right, resizeactive, 40 0

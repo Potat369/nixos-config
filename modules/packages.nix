@@ -40,10 +40,6 @@ in
   ];
 
   programs = {
-    dotnet = {
-      enable = true;
-      sdks = with pkgs.dotnetCorePackages; [ sdk_8_0-bin ];
-    };
     obs-studio = {
       enable = true;
       package = pkgs.obs-studio.override {
@@ -95,7 +91,6 @@ in
         lua-language-server
         gcc
         stylua
-        roslyn-ls
       ];
       repo = "https://github.com/Potat369/nvim-config";
       user = user;
@@ -121,6 +116,7 @@ in
       enable = true;
       withUWSM = true;
     };
+    nano.enable = false;
   };
 
   services = {
