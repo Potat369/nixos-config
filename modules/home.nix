@@ -211,7 +211,7 @@
         bind = $mainMod, B, exec, $browser
         bind = $mainMod, V, togglefloating,
         bind = $mainMod, R, exec, $menu
-        bind = $mainMod, E, exec, rofi -show calc -modi calc -no-show-match -no-sort
+        bind = $mainMod, E, exec, rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0
         bind = $mainMod, G, exec, rofi -show drun -run-command "uwsm app -- nvidia-offload {cmd}"
         bind = $mainMod, P, pseudo,
         bind = $mainMod, J, togglesplit,

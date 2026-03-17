@@ -15,8 +15,7 @@ let
 
         let
           deps = with pkgs; [
-            libGL
-            glfw-wayland-minecraft
+            glfw3-minecraft
             libpulseaudio
             openal
             udev
