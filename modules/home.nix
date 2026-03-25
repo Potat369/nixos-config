@@ -121,6 +121,16 @@
     ]
   '';
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    hyprcursor.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Original-Classic";
+    dotIcons.enable = false;
+    size = 16;
+  };
+  home.preferXdgDirectories = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.variables = [ "--all" ];
@@ -133,8 +143,8 @@
         $menu = rofi -show drun -run-command "uwsm app -- {cmd}"
         $browser = uwsm app -- microsoft-edge
 
-        env = XCURSOR_SIZE,16
-        env = HYPRCURSOR_SIZE,16
+        env = XCURSOR_SIZE,20
+        env = HYPRCURSOR_SIZE,20
         env = HYPRSHOT_DIR,$HOME/Pictures
 
         exec-once = dunst

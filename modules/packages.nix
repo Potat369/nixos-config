@@ -16,7 +16,7 @@ in
   environment.systemPackages = with pkgs; [
     wezterm
     discord
-    prismlauncher
+    unstable.prismlauncher
     libreoffice-qt6-fresh
     old.microsoft-edge
     aseprite
@@ -37,6 +37,8 @@ in
     git
     gh
     ripgrep
+    glibcInfo
+    man-pages
   ];
 
   programs = {
@@ -113,6 +115,7 @@ in
       package = unstable-small.jetbrains.rider;
     };
     hyprland = {
+
       enable = true;
       withUWSM = true;
     };
