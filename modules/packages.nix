@@ -27,6 +27,7 @@ in
     hypridle
     hyprshot
     hyprsunset
+    nwg-displays
 
     # Terminal Tools
     unzip

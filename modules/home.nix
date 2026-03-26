@@ -136,8 +136,7 @@
     systemd.variables = [ "--all" ];
     extraConfig = # hyprlang
       ''
-        monitor=eDP-1,1920x1080@144,auto,1,
-        monitor=HDMI-A-2,2560x1440@60,auto,1
+        source = ~/.config/hypr/monitors.conf
 
         $terminal = uwsm app -- wezterm
         $menu = rofi -show drun -run-command "uwsm app -- {cmd}"
@@ -184,7 +183,6 @@
             vfr = true
             enable_anr_dialog = false
             background_color = 0x000
-            disable_autoreload = true
         }
 
         xwayland:force_zero_scaling = true
@@ -286,9 +284,6 @@
         bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
         bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
         bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
-
-        bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
-        bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
 
         bindl = , XF86AudioNext, exec, playerctl next
         bindl = , XF86AudioPause, exec, playerctl play-pause
