@@ -20,18 +20,19 @@ in
     libreoffice-qt6-fresh
     old.microsoft-edge
     aseprite
-    dunst
     wl-clipboard
+    unstable.runapp
 
     # Hyprland
     hypridle
     hyprshot
     hyprsunset
+    libnotify
     nwg-displays
 
     # Terminal Tools
     unzip
-    socat
+    jq
     brightnessctl
     btop
     bluetuith
@@ -116,7 +117,6 @@ in
       package = unstable-small.jetbrains.rider;
     };
     hyprland = {
-
       enable = true;
       withUWSM = true;
     };
@@ -128,7 +128,7 @@ in
       enable = true;
       update.auto = {
         enable = true;
-        onCalendar = "weekly";
+        onCalendar = "1 day";
       };
       packages = [
         {

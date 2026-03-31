@@ -138,9 +138,9 @@
       ''
         source = ~/.config/hypr/monitors.conf
 
-        $terminal = uwsm app -- wezterm
-        $menu = rofi -show drun -run-command "uwsm app -- {cmd}"
-        $browser = uwsm app -- microsoft-edge
+        $terminal = runapp -- wezterm
+        $menu = rofi -show drun -run-command "runapp -- {cmd}"
+        $browser = runapp -- microsoft-edge
 
         env = XCURSOR_SIZE,20
         env = HYPRCURSOR_SIZE,20
@@ -177,9 +177,9 @@
             new_status = master
         }
 
-
         misc {
             disable_hyprland_logo = true
+            font_family = DejaVu Sans Mono
             vfr = true
             enable_anr_dialog = false
             background_color = 0x000
@@ -188,11 +188,7 @@
         xwayland:force_zero_scaling = true
 
         input {
-            kb_layout = us, fi
-            kb_variant =
-            kb_model =
-            kb_options = 
-            kb_rules =
+            kb_layout = us, fi, ru
 
             follow_mouse = 1
 
@@ -220,16 +216,16 @@
         bind = $mainMod, V, togglefloating,
         bind = $mainMod, R, exec, $menu
         bind = $mainMod, E, exec, rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0
-        bind = $mainMod, G, exec, rofi -show drun -run-command "uwsm app -- nvidia-offload {cmd}"
+        bind = $mainMod, G, exec, rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"
         bind = $mainMod, P, pseudo,
         bind = $mainMod, J, togglesplit,
-        bind = $mainMod, SLASH, exec, hyprshot -z -m output
-        bind = $mainMod, PERIOD, exec, hyprshot -z -m region
+        bind = $mainMod, SLASH, exec, hyprshot -z -m output -t 2000
+        bind = $mainMod, PERIOD, exec, hyprshot -z -m region -t 2000
 
         bind = $mainMod, O, exec, dunstctl history-pop
         bind = $mainMod, I, exec, dunstctl close-all
 
-        bind = $mainMod, T, exec, hyprctl switchxkblayout all next
+        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next & hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 System 'Switched layout to \"%\"'"
 
         binde = $mainMod_SHIFT, right, resizeactive, 40 0
         binde = $mainMod_SHIFT, left, resizeactive, -40 0
@@ -290,16 +286,65 @@
         bindl = , XF86AudioPlay, exec, playerctl play-pause
         bindl = , XF86AudioPrev, exec, playerctl previous
 
+        bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
+        bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
+
         windowrulev2 = suppressevent maximize, class:.*
 
         windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
         windowrulev2 = tile,class:Aseprite
         windowrulev2 = tile,class:Minecraft.*
+        windowrulev2 = tile,class:Cleanroom
 
         windowrulev2 = workspace 2, class:^Unity$
         windowrulev2 = noinitialfocus, class:^Unity$
 
         bind = SUPER, Z, pass, class:^(com\.obsproject\.Studio)$
       '';
+  };
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        separator_height = 4;
+        padding = 4;
+        horizontal_padding = 4;
+        font = "DejaVu Sans Mono 12";
+        corner_radius = 4;
+        progress_bar_corner_radius = 4;
+        offset = "(8, 8)";
+        width = "(0, 1080)";
+        frame_width = 0;
+      };
+      urgency_low = {
+        background = "#0d0c0c";
+        foreground = "#a6a69c";
+        highlight = "#7a8382";
+        frame_color = "#00000000";
+        timeout = 3;
+      };
+      urgency_normal = {
+        background = "#0d0c0c";
+        foreground = "#c5c9c5";
+        highlight = "#c5c9c5";
+        frame_color = "#00000000";
+        timeout = 3;
+        override_pause_level = 30;
+      };
+      urgency_critical = {
+        background = "#0d0c0c";
+        foreground = "#c4746e";
+        highlight = "#c4746e";
+        frame_color = "#00000000";
+        timeout = 0;
+        override_pause_level = 60;
+      };
+    };
+  };
+
+  programs.yazi = {
+    enable = true;
+    enableFishIntegration = true;
   };
 }
