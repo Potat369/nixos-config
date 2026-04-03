@@ -4,7 +4,7 @@
     ./idea.nix
     ./dotnet.nix
     ./rider.nix
-    ./neovim.nix
+    ./nvim.nix
     ./ddcutil.nix
   ];
 }

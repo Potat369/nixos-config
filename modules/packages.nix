@@ -85,10 +85,10 @@ in
           end
         '';
     };
-    neovim = {
+    nvim = {
       enable = true;
       defaultEditor = true;
-      wrapWithPackages = with pkgs; [
+      extraPackages = with pkgs; [
         inputs.treesitter.packages.${system}.cli
         nil
         nixfmt-rfc-style
@@ -96,8 +96,12 @@ in
         gcc
         stylua
       ];
-      repo = "https://github.com/Potat369/nvim-config";
-      user = user;
+      package = unstable.neovim-unwrapped;
+      pullConfig = {
+        enable = true;
+        repo = "https://github.com/Potat369/nvim-config";
+        user = user;
+      };
     };
     ddcutil = {
       enable = true;
