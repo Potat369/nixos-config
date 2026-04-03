@@ -16,7 +16,6 @@
 
   networking.hosts = {
     "10.0.0.1" = [
-      "chatgpt.com"
       "deepai.org"
       "duck.ai"
       "chat.deepseek.com"

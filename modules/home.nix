@@ -5,104 +5,167 @@
   ...
 }:
 {
-  home.username = "potat369";
-  home.stateVersion = "25.05";
-  home.homeDirectory = "/home/potat369";
+  home = {
+    username = "potat369";
+    stateVersion = "25.05";
+    homeDirectory = "/home/potat369";
 
-  home.file."projects/tmodloader".source =
-    config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
+    file."projects/tmodloader".source =
+      config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 
-  programs.rofi = {
-    enable = true;
-    theme = "Arc-Dark";
-    plugins = with pkgs; [ rofi-calc ];
-    extraConfig = {
-      show-icons = true;
+    pointerCursor = {
+      gtk.enable = true;
+      hyprcursor.enable = true;
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Original-Classic";
+      dotIcons.enable = false;
+      size = 16;
+    };
+    preferXdgDirectories = true;
+  };
+
+  programs = {
+    wezterm = {
+      enable = true;
+      extraConfig = # lua
+        ''
+          wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+          	local process_name = tab.active_pane.foreground_process_name or ""
+          	process_name = process_name:match("([^/\\]+)$") or process_name
+
+          	local index = tostring(tab.tab_index + 1)
+
+          	local title = process_name == "" and index or (index .. ": " .. process_name)
+          	return {
+          		{ Text = " " .. title .. " " },
+          	}
+          end)
+
+          local config = {
+          	font_size = 13,
+          	font = wezterm.font("DejaVu Sans Mono"),
+          	force_reverse_video_cursor = true,
+          	use_fancy_tab_bar = false,
+            tab_max_width = 100,
+            status_update_interval = 500,
+          	window_padding = {
+          		left = 0,
+          		right = 0,
+          		top = 0,
+          		bottom = 0,
+          	},
+          	keys = {
+          		{ key = "1", mods = "ALT", action = wezterm.action.ActivateTab(0) },
+          		{ key = "2", mods = "ALT", action = wezterm.action.ActivateTab(1) },
+          		{ key = "3", mods = "ALT", action = wezterm.action.ActivateTab(2) },
+          		{ key = "4", mods = "ALT", action = wezterm.action.ActivateTab(3) },
+          		{ key = "5", mods = "ALT", action = wezterm.action.ActivateTab(4) },
+          		{ key = "6", mods = "ALT", action = wezterm.action.ActivateTab(5) },
+          		{ key = "7", mods = "ALT", action = wezterm.action.ActivateTab(6) },
+          		{ key = "8", mods = "ALT", action = wezterm.action.ActivateTab(7) },
+          		{ key = "9", mods = "ALT", action = wezterm.action.ActivateTab(8) },
+          	},
+          }
+
+          return config
+        '';
+    };
+
+    git = {
+      enable = true;
+      settings = {
+        init = {
+          defaultBranch = "main";
+        };
+        user = {
+          name = "Potat369";
+          email = "yevheniidemian@gmail.com";
+        };
+        alias = {
+          tree = "log --oneline --graph --decorate --all";
+          cm = "commit -m";
+        };
+        credential."https://github.com" = {
+          helper = "!/run/current-system/sw/bin/gh auth git-credential";
+        };
+      };
+    };
+
+    rofi = {
+      enable = true;
+      theme = "Arc-Dark";
+      plugins = with pkgs; [ rofi-calc ];
+      extraConfig = {
+        show-icons = true;
+      };
+    };
+
+    yazi = {
+      enable = true;
+      enableFishIntegration = true;
     };
   };
 
-  programs.git = {
-    enable = true;
-    settings = {
-      init = {
-        defaultBranch = "main";
-      };
-      user = {
-        name = "Potat369";
-        email = "yevheniidemian@gmail.com";
-      };
-      alias = {
-        tree = "log --oneline --graph --decorate --all";
-        cm = "commit -m";
-      };
-      credential."https://github.com" = {
-        helper = "!/run/current-system/sw/bin/gh auth git-credential";
+  services = {
+    hypridle = {
+      enable = true;
+
+      settings = {
+        general = {
+          after_sleep_cmd = "hyprctl dispatch dpms on";
+          ignore_dbus_inhibit = false;
+        };
+
+        listener = [
+          {
+            timeout = 300;
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on";
+          }
+        ];
       };
     };
-  };
-  programs.wezterm = {
-    enable = true;
-    extraConfig = # lua
-      ''
-        wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-        	local process_name = tab.active_pane.foreground_process_name or ""
-        	process_name = process_name:match("([^/\\]+)$") or process_name
 
-        	local index = tostring(tab.tab_index + 1)
-
-        	local title = process_name == "" and index or (index .. ": " .. process_name)
-        	return {
-        		{ Text = " " .. title .. " " },
-        	}
-        end)
-
-        local config = {
-        	font_size = 13,
-        	font = wezterm.font("DejaVu Sans Mono"),
-        	force_reverse_video_cursor = true,
-        	use_fancy_tab_bar = false,
-          tab_max_width = 100,
-          status_update_interval = 500,
-        	window_padding = {
-        		left = 0,
-        		right = 0,
-        		top = 0,
-        		bottom = 0,
-        	},
-        	keys = {
-        		{ key = "1", mods = "ALT", action = wezterm.action.ActivateTab(0) },
-        		{ key = "2", mods = "ALT", action = wezterm.action.ActivateTab(1) },
-        		{ key = "3", mods = "ALT", action = wezterm.action.ActivateTab(2) },
-        		{ key = "4", mods = "ALT", action = wezterm.action.ActivateTab(3) },
-        		{ key = "5", mods = "ALT", action = wezterm.action.ActivateTab(4) },
-        		{ key = "6", mods = "ALT", action = wezterm.action.ActivateTab(5) },
-        		{ key = "7", mods = "ALT", action = wezterm.action.ActivateTab(6) },
-        		{ key = "8", mods = "ALT", action = wezterm.action.ActivateTab(7) },
-        		{ key = "9", mods = "ALT", action = wezterm.action.ActivateTab(8) },
-        	},
-        }
-
-        return config
-      '';
-  };
-
-  services.hypridle = {
-    enable = true;
-
-    settings = {
-      general = {
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = false;
+    dunst = {
+      enable = true;
+      settings = {
+        global = {
+          separator_height = 4;
+          padding = 4;
+          horizontal_padding = 4;
+          font = "DejaVu Sans Mono 12";
+          corner_radius = 4;
+          progress_bar_corner_radius = 4;
+          offset = "(8, 8)";
+          width = "(0, 1080)";
+          frame_width = 0;
+        };
+        urgency_low = {
+          background = "#0d0c0c";
+          foreground = "#a6a69c";
+          highlight = "#7a8382";
+          frame_color = "#00000000";
+          timeout = 3;
+        };
+        urgency_normal = {
+          background = "#0d0c0c";
+          foreground = "#c5c9c5";
+          highlight = "#c5c9c5";
+          frame_color = "#00000000";
+          timeout = 3;
+          override_pause_level = 30;
+        };
+        urgency_critical = {
+          background = "#0d0c0c";
+          foreground = "#c4746e";
+          highlight = "#c4746e";
+          frame_color = "#00000000";
+          timeout = 0;
+          override_pause_level = 60;
+        };
       };
-
-      listener = [
-        {
-          timeout = 300;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
-        }
-      ];
     };
+
   };
 
   xdg.configFile."hypr/hyprsunset.conf".text = ''
@@ -121,16 +184,6 @@
     ]
   '';
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    hyprcursor.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Original-Classic";
-    dotIcons.enable = false;
-    size = 16;
-  };
-  home.preferXdgDirectories = true;
-
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.variables = [ "--all" ];
@@ -144,7 +197,7 @@
 
         env = XCURSOR_SIZE,20
         env = HYPRCURSOR_SIZE,20
-        env = HYPRSHOT_DIR,$HOME/Pictures
+        env = HYPRSHOT_DIR,$HOME/Pictures/Screenshots/
 
         exec-once = dunst
         exec-once = hyprsunset
@@ -225,7 +278,7 @@
         bind = $mainMod, O, exec, dunstctl history-pop
         bind = $mainMod, I, exec, dunstctl close-all
 
-        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next & hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 System 'Switched layout to \"%\"'"
+        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next & hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 -h string:x-dunst-stack-tag:system-language System 'Switched layout to \"%\"'"
 
         binde = $mainMod_SHIFT, right, resizeactive, 40 0
         binde = $mainMod_SHIFT, left, resizeactive, -40 0
@@ -286,8 +339,8 @@
         bindl = , XF86AudioPlay, exec, playerctl play-pause
         bindl = , XF86AudioPrev, exec, playerctl previous
 
-        bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
-        bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
+        # bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
+        # bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
 
         windowrulev2 = suppressevent maximize, class:.*
 
@@ -303,48 +356,4 @@
       '';
   };
 
-  services.dunst = {
-    enable = true;
-    settings = {
-      global = {
-        separator_height = 4;
-        padding = 4;
-        horizontal_padding = 4;
-        font = "DejaVu Sans Mono 12";
-        corner_radius = 4;
-        progress_bar_corner_radius = 4;
-        offset = "(8, 8)";
-        width = "(0, 1080)";
-        frame_width = 0;
-      };
-      urgency_low = {
-        background = "#0d0c0c";
-        foreground = "#a6a69c";
-        highlight = "#7a8382";
-        frame_color = "#00000000";
-        timeout = 3;
-      };
-      urgency_normal = {
-        background = "#0d0c0c";
-        foreground = "#c5c9c5";
-        highlight = "#c5c9c5";
-        frame_color = "#00000000";
-        timeout = 3;
-        override_pause_level = 30;
-      };
-      urgency_critical = {
-        background = "#0d0c0c";
-        foreground = "#c4746e";
-        highlight = "#c4746e";
-        frame_color = "#00000000";
-        timeout = 0;
-        override_pause_level = 60;
-      };
-    };
-  };
-
-  programs.yazi = {
-    enable = true;
-    enableFishIntegration = true;
-  };
 }

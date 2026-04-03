@@ -28,7 +28,7 @@ in
     hyprshot
     hyprsunset
     libnotify
-    nwg-displays
+    inputs.hyprmoncfg.packages.${system}.default
 
     # Terminal Tools
     unzip
@@ -138,5 +138,6 @@ in
       ];
     };
     upower.enable = true;
+    hyprmoncfg.enable = true;
   };
 }
