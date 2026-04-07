@@ -43,11 +43,11 @@
 
           local config = {
           	font_size = 13,
+            warn_about_missing_glyphs = false,
           	font = wezterm.font("DejaVu Sans Mono"),
           	force_reverse_video_cursor = true,
           	use_fancy_tab_bar = false,
             tab_max_width = 100,
-            status_update_interval = 500,
           	window_padding = {
           		left = 0,
           		right = 0,
@@ -98,11 +98,6 @@
       extraConfig = {
         show-icons = true;
       };
-    };
-
-    yazi = {
-      enable = true;
-      enableFishIntegration = true;
     };
   };
 
@@ -278,7 +273,7 @@
         bind = $mainMod, O, exec, dunstctl history-pop
         bind = $mainMod, I, exec, dunstctl close-all
 
-        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next & hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 -h string:x-dunst-stack-tag:system-language System 'Switched layout to \"%\"'"
+        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next && hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 -h string:x-dunst-stack-tag:system-language System 'Switched layout to \"%\"'"
 
         binde = $mainMod_SHIFT, right, resizeactive, 40 0
         binde = $mainMod_SHIFT, left, resizeactive, -40 0
