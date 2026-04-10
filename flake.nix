@@ -10,7 +10,7 @@
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     treesitter.url = "github:tree-sitter/tree-sitter";
-    hyprmoncfg.url = "github:Potat369/hyprmoncfg";
+    hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
   };
   outputs =
     inputs@{
@@ -61,7 +61,6 @@
           ./hosts/laptop
           inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.home-manager.nixosModules.home-manager
-          inputs.hyprmoncfg.nixosModules.default
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = false;

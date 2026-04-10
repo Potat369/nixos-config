@@ -1,0 +1,46 @@
+[notifications]
+disabled = false 
+
+[general]
+destination = "$HOME/.config/hypr/monitors.conf"
+
+[lid_events]
+
+[lid_events.dbus_query_object]
+destination = "org.freedesktop.UPower"
+path = "/org/freedesktop/UPower"
+method = "org.freedesktop.DBus.Properties.Get"
+expected_lid_closing_value = "true"
+
+[[lid_events.dbus_query_object.args]]
+arg = "org.freedesktop.UPower"
+
+[[lid_events.dbus_query_object.args]]
+arg = "LidIsClosed"
+
+[[lid_events.dbus_signal_match_rules]]
+interface = "org.freedesktop.DBus.Properties"
+object_path = "/org/freedesktop/UPower"
+member = "PropertiesChanged"
+
+[[lid_events.dbus_signal_receive_filters]]
+name = "org.freedesktop.DBus.Properties.PropertiesChanged"
+body = "LidIsClosed"
+
+[profiles.undocked]
+config_file = "hyprconfigs/undocked.conf"
+config_file_type = "static"
+
+[[profiles.undocked.conditions.required_monitors]]
+name = "eDP-1"
+
+[profiles.docked]
+config_file = "hyprconfigs/docked.go.tmpl"
+config_file_type = "template"
+post_apply_exec = "hyprctl workspaces -j | jq '.[] | select(.monitor == \"eDP-1\") | .id' | xargs -I{} hyprctl dispatch moveworkspacetomonitor {} HDMI-A-2"
+
+[[profiles.docked.conditions.required_monitors]]
+name = "eDP-1"
+
+[[profiles.docked.conditions.required_monitors]]
+name = "HDMI-A-2"

@@ -20,17 +20,18 @@ in
     libreoffice-qt6-fresh
     old.microsoft-edge
     aseprite
-    wl-clipboard
-    unstable.runapp
 
     # Hyprland
     hypridle
     hyprshot
     hyprsunset
-    libnotify
-    inputs.hyprmoncfg.packages.${system}.default
+    inputs.hyprdynamicmonitors.packages.${system}.default
 
     # Terminal Tools
+    wl-clipboard
+    unstable.runapp
+    libnotify
+    imagemagick
     unzip
     yazi
     jq
@@ -42,9 +43,11 @@ in
     ripgrep
     glibcInfo
     man-pages
+    dotnetCorePackages.sdk_8_0-bin
   ];
 
   programs = {
+    bash.interactiveShellInit = "unset HISTFILE";
     obs-studio = {
       enable = true;
       package = pkgs.obs-studio.override {
@@ -153,6 +156,5 @@ in
       ];
     };
     upower.enable = true;
-    hyprmoncfg.enable = true;
   };
 }

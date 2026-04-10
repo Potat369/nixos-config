@@ -57,14 +57,12 @@ in
         [Desktop Entry]
         Version=1.0
         Type=Application
-        Name=tModLoader Development 
+        Name=Rider
         Icon=${cfg.package}/rider/bin/rider.svg
         Exec=nix-shell ${shell} --run rider
         Comment=Patched rider for tModLoader development
         Categories=Development;IDE;
-        Terminal=false
-        StartupWMClass=jetbrains-rider
-        StartupNotify=true
+        GenericName=Patched Rider for tModLoader development
       '')
     ];
   };

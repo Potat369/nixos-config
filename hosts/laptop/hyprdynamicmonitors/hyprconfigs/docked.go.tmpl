@@ -1,0 +1,15 @@
+{{if isLidClosed}}
+
+# <<<<< TUI AUTO START
+monitor=eDP-1, disable
+monitor=HDMI-A-2, 2560x1440@60, 0x0, 1.0
+# <<<<< TUI AUTO END
+
+{{else}}
+
+# <<<<< TUI AUTO START
+monitor=eDP-1, 1920x1080@144, 0x0, 1.0
+monitor=HDMI-A-2, 1920x1080@180, 0x0, 1.0, mirror, eDP-1
+# <<<<< TUI AUTO END
+
+{{end}}

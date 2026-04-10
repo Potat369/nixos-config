@@ -13,6 +13,8 @@
     file."projects/tmodloader".source =
       config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 
+    file.".config/hyprdynamicmonitors".source = ./../hosts/laptop/hyprdynamicmonitors;
+
     pointerCursor = {
       gtk.enable = true;
       hyprcursor.enable = true;
@@ -194,8 +196,11 @@
         env = HYPRCURSOR_SIZE,20
         env = HYPRSHOT_DIR,$HOME/Pictures/Screenshots/
 
+        exec-once = hyprdynamicmonitors run --enable-lid-events
         exec-once = dunst
         exec-once = hyprsunset
+
+        workspace = 1, monitor:HDMI-A-2, persistent:true, default:true
 
         general {
             gaps_in = 2
