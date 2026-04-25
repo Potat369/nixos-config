@@ -69,4 +69,9 @@
   };
 
   hardware.i2c.enable = true;
+
+  security.sudo.extraConfig = ''
+    Defaults pwfeedback
+    Defaults insults
+  '';
 }

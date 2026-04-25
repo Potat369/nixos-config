@@ -57,10 +57,9 @@ in
         [Desktop Entry]
         Version=1.0
         Type=Application
-        Name=Rider
+        Name=tModLoader development
         Icon=${cfg.package}/rider/bin/rider.svg
         Exec=nix-shell ${shell} --run rider
-        Comment=Patched rider for tModLoader development
         Categories=Development;IDE;
         GenericName=Patched Rider for tModLoader development
       '')

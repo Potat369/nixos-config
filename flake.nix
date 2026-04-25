@@ -1,9 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/1327e798cb055f96f92685df444e9a2c326ab5ed";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-unstable-small.url = "github:Nixos/nixpkgs/nixos-unstable-small";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,26 +9,21 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     treesitter.url = "github:tree-sitter/tree-sitter";
     hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
       self,
       nixpkgs,
       nixpkgs-unstable,
-      nixpkgs-unstable-small,
       ...
     }:
     let
       system = "x86_64-linux";
       unstable = import nixpkgs-unstable {
-        system = system;
-        config.allowUnfree = true;
-      };
-      unstable-small = import nixpkgs-unstable-small {
-        system = system;
-        config.allowUnfree = true;
-      };
-      old = import inputs.nixpkgs-old {
         system = system;
         config.allowUnfree = true;
       };
@@ -51,8 +44,6 @@
         specialArgs = {
           inherit
             unstable
-            unstable-small
-            old
             inputs
             system
             ;

@@ -46,14 +46,11 @@ in
           [Desktop Entry]
           Version=1.0
           Type=Application
-          Name=Minecraft Development
+          Name=Minecraft development
           Icon=${cfg.package}/idea/bin/idea.svg
           Exec=nix-shell ${shell} --run idea
-          Comment=Patched intellij idea for minecraft development
           Categories=Development;IDE;
-          Terminal=false
-          StartupWMClass=jetbrains-idea
-          StartupNotify=true
+          GenericName=Patched IDEA for Minecraft development
         ''
       ))
     ];

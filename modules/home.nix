@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 {
@@ -190,7 +189,7 @@
 
         $terminal = runapp -- wezterm
         $menu = rofi -show drun -run-command "runapp -- {cmd}"
-        $browser = runapp -- microsoft-edge
+        $browser = runapp -- zen
 
         env = XCURSOR_SIZE,20
         env = HYPRCURSOR_SIZE,20
@@ -199,8 +198,6 @@
         exec-once = hyprdynamicmonitors run --enable-lid-events
         exec-once = dunst
         exec-once = hyprsunset
-
-        workspace = 1, monitor:HDMI-A-2, persistent:true, default:true
 
         general {
             gaps_in = 2
@@ -236,6 +233,10 @@
             vfr = true
             enable_anr_dialog = false
             background_color = 0x000
+        }
+
+        render {
+          direct_scanout = false
         }
 
         xwayland:force_zero_scaling = true
@@ -274,9 +275,6 @@
         bind = $mainMod, J, togglesplit,
         bind = $mainMod, SLASH, exec, hyprshot -z -m output -t 2000
         bind = $mainMod, PERIOD, exec, hyprshot -z -m region -t 2000
-
-        bind = $mainMod, O, exec, dunstctl history-pop
-        bind = $mainMod, I, exec, dunstctl close-all
 
         bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next && hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 -h string:x-dunst-stack-tag:system-language System 'Switched layout to \"%\"'"
 

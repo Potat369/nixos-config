@@ -1,12 +1,9 @@
 {
   pkgs,
   config,
-  lib,
   unstable,
-  unstable-small,
   inputs,
   system,
-  old,
   ...
 }:
 let
@@ -18,8 +15,8 @@ in
     discord
     unstable.prismlauncher
     libreoffice-qt6-fresh
-    old.microsoft-edge
-    aseprite
+    inputs.zen-browser.packages.${system}.default
+    unstable.aseprite
 
     # Hyprland
     hypridle
@@ -29,9 +26,9 @@ in
 
     # Terminal Tools
     wl-clipboard
+    cloudflared
     unstable.runapp
     libnotify
-    imagemagick
     unzip
     yazi
     jq
@@ -43,7 +40,6 @@ in
     ripgrep
     glibcInfo
     man-pages
-    dotnetCorePackages.sdk_8_0-bin
   ];
 
   programs = {
@@ -55,7 +51,6 @@ in
       };
       plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
     };
-    droidcam.enable = true;
     steam.enable = true;
     noisetorch.enable = true;
     direnv = {
@@ -67,6 +62,8 @@ in
       enable = true;
       interactiveShellInit = # fish
         ''
+          set DIRENV_WARN_TIMEOUT 0
+
           function y
             set tmp (mktemp -t "yazi-cwd.XXXXXX")
             command yazi $argv --cwd-file="$tmp"
@@ -122,7 +119,7 @@ in
     idea = {
       enable = true;
       patchedMinecraftEntry = true;
-      package = unstable-small.jetbrains.idea;
+      package = unstable.jetbrains.idea;
     };
     java = {
       enable = true;
@@ -131,7 +128,7 @@ in
     rider = {
       enable = true;
       patchedTMLEntry = true;
-      package = unstable-small.jetbrains.rider;
+      package = unstable.jetbrains.rider;
     };
     hyprland = {
       enable = true;
@@ -144,10 +141,6 @@ in
     speechd.enable = false;
     flatpak = {
       enable = true;
-      update.auto = {
-        enable = true;
-        onCalendar = "1 day";
-      };
       packages = [
         {
           appId = "org.vinegarhq.Sober";
