@@ -12,6 +12,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     wezterm
+    obsidian
     discord
     unstable.prismlauncher
     libreoffice-qt6-fresh
@@ -27,6 +28,7 @@ in
     # Terminal Tools
     wl-clipboard
     cloudflared
+    inputs.stormy.packages.${system}.default
     unstable.runapp
     libnotify
     unzip

@@ -74,4 +74,11 @@
     Defaults pwfeedback
     Defaults insults
   '';
+
+  systemd.services = {
+    "sleep.target".enable = false;
+    "suspend.target".enable = false;
+    "hibernate.target".enable = false;
+    "hybrid-sleep.target".enable = false;
+  };
 }

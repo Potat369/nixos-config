@@ -6,6 +6,7 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     treesitter.url = "github:tree-sitter/tree-sitter";
     hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
@@ -13,6 +14,8 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stormy.url = "github:ashish0kumar/stormy";
   };
   outputs =
     inputs@{

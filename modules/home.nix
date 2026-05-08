@@ -34,6 +34,8 @@
           	local process_name = tab.active_pane.foreground_process_name or ""
           	process_name = process_name:match("([^/\\]+)$") or process_name
 
+            process_name = process_name:match("%.(.+)-wrapped") or process_name
+
           	local index = tostring(tab.tab_index + 1)
 
           	local title = process_name == "" and index or (index .. ": " .. process_name)
@@ -70,6 +72,11 @@
 
           return config
         '';
+    };
+
+    tealdeer = {
+      enable = true;
+      enableAutoUpdates = true;
     };
 
     git = {
@@ -254,7 +261,7 @@
         }
           
         device {
-            name = ust0001:00-06cb:7e7e-touchpad
+            name = ps/2-synaptics-touchpad
             sensitivity = 1
         }
 
