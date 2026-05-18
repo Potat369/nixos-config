@@ -10,7 +10,7 @@
       };
       charger = {
         governor = "performance";
-        turbo = "never";
+        turbo = "true";
         scaling_max_freq = 3500000;
       };
     };
