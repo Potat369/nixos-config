@@ -6,7 +6,7 @@
 {
   home = {
     username = "potat369";
-    stateVersion = "25.05";
+    stateVersion = "26.05";
     homeDirectory = "/home/potat369";
 
     file."projects/tmodloader".source =
@@ -189,6 +189,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
     systemd.variables = [ "--all" ];
     extraConfig = # hyprlang
       ''
@@ -226,7 +227,6 @@
         animations:enabled = no
 
         dwindle {
-            pseudotile = true
             preserve_split = true
         }
 
@@ -236,8 +236,9 @@
 
         misc {
             disable_hyprland_logo = true
+            disable_splash_rendering = true
+            disable_watchdog_warning = true
             font_family = DejaVu Sans Mono
-            vfr = true
             enable_anr_dialog = false
             background_color = 0x000
         }
@@ -280,7 +281,6 @@
         bind = $mainMod, E, exec, rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0
         bind = $mainMod, G, exec, rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"
         bind = $mainMod, P, pseudo,
-        bind = $mainMod, J, togglesplit,
         bind = $mainMod, SLASH, exec, hyprshot -z -m output -t 2000
         bind = $mainMod, PERIOD, exec, hyprshot -z -m region -t 2000
 
@@ -348,15 +348,12 @@
         # bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
         # bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
 
-        windowrulev2 = suppressevent maximize, class:.*
+        windowrule = match:class .*, suppress_event maximize
 
-        windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
-        windowrulev2 = tile,class:Aseprite
-        windowrulev2 = tile,class:Minecraft.*
-        windowrulev2 = tile,class:Cleanroom
-
-        windowrulev2 = workspace 2, class:^Unity$
-        windowrulev2 = noinitialfocus, class:^Unity$
+        windowrule = match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_initial_focus on
+        windowrule = match:class Aseprite, tile on
+        windowrule = match:class Minecraft.*, tile on
+        windowrule = match:class Cleanroom, tile on
 
         bind = SUPER, Z, pass, class:^(com\.obsproject\.Studio)$
       '';

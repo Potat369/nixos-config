@@ -21,7 +21,9 @@
     "modesetting"
     "nvidia"
   ];
+
   hardware.nvidia = {
+    modesetting.enable = true;
     open = false;
     prime = {
       offload = {
@@ -33,5 +35,4 @@
       nvidiaBusId = "PCI:2:0:0";
     };
   };
-
 }

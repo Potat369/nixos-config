@@ -30,15 +30,15 @@
 
   boot.loader = {
     systemd-boot.enable = true;
-    timeout = 5;
+    timeout = 3;
     efi.canTouchEfiVariables = true;
   };
 
   documentation = {
     nixos.enable = false;
-    man.generateCaches = false;
+    man.cache.enable = false;
   };
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
   networking.networkmanager.enable = true;
   services.pipewire = {
     enable = true;

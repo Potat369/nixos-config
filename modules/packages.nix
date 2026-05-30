@@ -13,11 +13,11 @@ in
   environment.systemPackages = with pkgs; [
     wezterm
     obsidian
-    discord
-    unstable.prismlauncher
+    prismlauncher
     libreoffice-qt6-fresh
     inputs.zen-browser.packages.${system}.default
-    unstable.aseprite
+    aseprite
+    vesktop
 
     # Hyprland
     hypridle
@@ -29,14 +29,13 @@ in
     wl-clipboard
     cloudflared
     inputs.stormy.packages.${system}.default
-    unstable.runapp
+    runapp
     libnotify
     unzip
     yazi
     jq
     brightnessctl
     btop
-    bluetuith
     git
     gh
     ripgrep
@@ -64,6 +63,10 @@ in
       enable = true;
       interactiveShellInit = # fish
         ''
+          if not uwsm check is-active; and uwsm check may-start
+              exec uwsm start hyprland-uwsm.desktop
+          end
+
           set DIRENV_WARN_TIMEOUT 0
 
           function y
@@ -73,10 +76,6 @@ in
               builtin cd -- "$cwd"
             end
             rm -f -- "$tmp"
-          end
-
-          if not uwsm check is-active; and uwsm check may-start
-              exec uwsm start hyprland-uwsm.desktop
           end
 
           set -U fish_greeting
@@ -103,12 +102,12 @@ in
       extraPackages = with pkgs; [
         inputs.treesitter.packages.${system}.cli
         nil
-        nixfmt-rfc-style
+        nixfmt
         lua-language-server
         gcc
         stylua
       ];
-      package = unstable.neovim-unwrapped;
+      package = pkgs.neovim-unwrapped;
       pullConfig = {
         enable = true;
         repo = "https://github.com/Potat369/nvim-config";
@@ -121,20 +120,22 @@ in
     idea = {
       enable = true;
       patchedMinecraftEntry = true;
-      package = unstable.jetbrains.idea;
+      package = pkgs.jetbrains.idea;
     };
     java = {
       enable = true;
       package = pkgs.jdk25;
     };
     rider = {
-      enable = true;
+      enable = false;
       patchedTMLEntry = true;
-      package = unstable.jetbrains.rider;
+      package = pkgs.jetbrains.rider;
     };
     hyprland = {
       enable = true;
       withUWSM = true;
+      package = pkgs.hyprland;
+      portalPackage = pkgs.xdg-desktop-portal-hyprland;
     };
     nano.enable = false;
   };
