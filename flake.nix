@@ -9,12 +9,11 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     treesitter.url = "github:tree-sitter/tree-sitter";
-    hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    hyprland.url = "github:hyprwm/Hyprland";
     stormy.url = "github:ashish0kumar/stormy";
   };
   outputs =

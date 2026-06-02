@@ -24,11 +24,12 @@
       "grok.com"
       "claude.ai"
       "copilot.microsoft.com"
-      "gemini.google.com"
     ];
   };
 
+  boot.kernelParams = [ "drm_kms_helper.poll=1" ];
   boot.loader = {
+
     systemd-boot.enable = true;
     timeout = 3;
     efi.canTouchEfiVariables = true;

@@ -12,8 +12,6 @@
     file."projects/tmodloader".source =
       config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 
-    file.".config/hyprdynamicmonitors".source = ./../hosts/laptop/hyprdynamicmonitors;
-
     pointerCursor = {
       gtk.enable = true;
       hyprcursor.enable = true;
@@ -104,6 +102,7 @@
       theme = "Arc-Dark";
       plugins = with pkgs; [ rofi-calc ];
       extraConfig = {
+
         show-icons = true;
       };
     };
@@ -189,173 +188,264 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    configType = "hyprlang";
+    configType = "lua";
     systemd.variables = [ "--all" ];
-    extraConfig = # hyprlang
+    extraConfig = # lua
       ''
-        source = ~/.config/hypr/monitors.conf
+        local function app(cmd)
+        	return "runapp -- " .. cmd
+        end
 
-        $terminal = runapp -- wezterm
-        $menu = rofi -show drun -run-command "runapp -- {cmd}"
-        $browser = runapp -- zen
+        local function contains(table, predicate)
+        	for i, item in pairs(table) do
+        		if predicate(i, item) then
+        			return true
+        		end
+        	end
+        	return false
+        end
 
-        env = XCURSOR_SIZE,20
-        env = HYPRCURSOR_SIZE,20
-        env = HYPRSHOT_DIR,$HOME/Pictures/Screenshots/
+        local function read_content(filename)
+        	local file = io.open(filename, "rb")
+        	if not file then
+        		return nil
+        	end
+        	local buf = file:read("a")
+        	file:close()
+        	return buf
+        end
 
-        exec-once = hyprdynamicmonitors run --enable-lid-events
-        exec-once = dunst
-        exec-once = hyprsunset
+        local terminal = "wezterm"
+        local menu = string.format('rofi -show drun -run-command "%s"', app("{cmd}"))
+        local browser = "zen"
+        local startup = { "dunst", "hyprsunset" }
+        local languages = { "us", "fi", "ru", "ua" }
 
-        general {
-            gaps_in = 2
-            gaps_out = 4
-            border_size = 0
+        hl.env("XCURSOR_SIZE", "20")
+        hl.env("HYPRCURSOR_SIZE", "20")
+        hl.env("HYPRSHOT_DIR", "$HOME/Pictures/Screenshots/")
 
-            resize_on_border = false
-            allow_tearing = false
-            layout = dwindle
-        }
+        hl.on("hyprland.start", function()
+        	for _, cmd in ipairs(startup) do
+        		hl.exec_cmd(app(cmd))
+        	end
+        end)
 
-        decoration {
-            rounding = 4
+        hl.bind("SUPER + Q", hl.dsp.exec_cmd(app(terminal)))
+        hl.bind("SUPER + C", hl.dsp.window.close())
+        hl.bind("SUPER + M", hl.dsp.exec_cmd("systemctl poweroff"))
+        hl.bind("SUPER + N", hl.dsp.exec_cmd("systemctl reboot"))
+        hl.bind("SUPER + B", hl.dsp.exec_cmd(app(browser)))
+        hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
+        hl.bind("SUPER + R", hl.dsp.exec_cmd(app(menu)))
+        hl.bind("SUPER + E", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0"))
+        hl.bind("SUPER + G", hl.dsp.exec_cmd('rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"'))
+        hl.bind("SUPER + SLASH", hl.dsp.exec_cmd("hyprshot -z -m output -t 2000"))
+        hl.bind("SUPER + PERIOD", hl.dsp.exec_cmd("hyprshot -z -m region -t 2000"))
+        hl.bind("SUPER + Z", hl.dsp.exec_cmd("pass class:^(com\\.obsproject\\.Studio)$"))
 
-            blur:enabled = false
-            shadow:enabled = false
-        }
+        hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 40, y = 0 }), { repeating = true })
+        hl.bind("SUPER + SHIFT + left", hl.dsp.window.resize({ x = -40, y = 0 }), { repeating = true })
+        hl.bind("SUPER + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -40 }), { repeating = true })
+        hl.bind("SUPER + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 40 }), { repeating = true })
 
-        animations:enabled = no
+        hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }))
+        hl.bind("SUPER + right", hl.dsp.focus({ direction = "r" }))
+        hl.bind("SUPER + up", hl.dsp.focus({ direction = "u" }))
+        hl.bind("SUPER + down", hl.dsp.focus({ direction = "d" }))
 
-        dwindle {
-            preserve_split = true
-        }
+        hl.bind("SUPER + CTRL + left", hl.dsp.window.move({ direction = "l" }))
+        hl.bind("SUPER + CTRL + right", hl.dsp.window.move({ direction = "r" }))
+        hl.bind("SUPER + CTRL + up", hl.dsp.window.move({ direction = "u" }))
+        hl.bind("SUPER + CTRL + down", hl.dsp.window.move({ direction = "d" }))
 
-        master {
-            new_status = master
-        }
+        for i = 1, 10 do
+        	hl.bind("SUPER + " .. i % 10, hl.dsp.focus({ workspace = i }))
+        	hl.bind("SUPER + SHIFT + " .. i % 10, hl.dsp.window.move({ workspace = i }))
+        end
+        hl.bind("SUPER + S", hl.dsp.workspace.toggle_special("magic"))
+        hl.bind("SUPER + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
-        misc {
-            disable_hyprland_logo = true
-            disable_splash_rendering = true
-            disable_watchdog_warning = true
-            font_family = DejaVu Sans Mono
-            enable_anr_dialog = false
-            background_color = 0x000
-        }
+        hl.bind("SUPER + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+        hl.bind("SUPER + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
-        render {
-          direct_scanout = false
-        }
+        hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
+        hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-        xwayland:force_zero_scaling = true
+        local media_flags = { repeating = true, locked = true }
+        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), media_flags)
+        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), media_flags)
+        hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), media_flags)
+        hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), media_flags)
+        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl s 10%+"), media_flags)
+        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl s 10%-"), media_flags)
 
-        input {
-            kb_layout = us, fi, ru
+        hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+        hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
-            follow_mouse = 1
+        hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
 
-            sensitivity = -0.5
+        hl.window_rule({
+        	match = {
+        		class = "^$",
+        		title = "^$",
+        		xwayland = 1,
+        		float = 1,
+        		fullscreen = 0,
+        		pin = 0,
+        	},
+        	no_initial_focus = true,
+        })
 
-            touchpad {
-                natural_scroll = true
-                disable_while_typing = false
-            }
-        }
-          
-        device {
-            name = ps/2-synaptics-touchpad
-            sensitivity = 1
-        }
+        hl.window_rule({ match = { class = "Aseprite" }, tile = true })
+        hl.window_rule({ match = { class = "Minecraft.*" }, tile = true })
+        hl.window_rule({ match = { class = "Cleanroom" }, tile = true })
 
-        debug:full_cm_proto=true
+        hl.config({
+        	general = {
+        		gaps_in = 2,
+        		gaps_out = 4,
+        		border_size = 0,
+        		resize_on_border = false,
+        		allow_tearing = false,
+        		layout = "dwindle",
+        	},
+        	decoration = {
+        		rounding = 4,
+        		blur = {
+        			enabled = false,
+        		},
+        		shadow = {
+        			enabled = false,
+        		},
+        	},
+        	animations = {
+        		enabled = false,
+        	},
+        	dwindle = {
+        		preserve_split = true,
+        	},
+        	misc = {
+        		disable_hyprland_logo = true,
+        		disable_splash_rendering = true,
+        		disable_watchdog_warning = true,
+        		font_family = "DejaVu Sans Mono",
+        		enable_anr_dialog = false,
+        		background_color = "0x000",
+        	},
+        	render = {
+        		direct_scanout = false,
+        	},
+        	xwayland = {
+        		force_zero_scaling = true,
+        	},
+        	input = {
+        		kb_layout = table.concat(languages, ", "),
+        		follow_mouse = 1,
+        		sensitivity = -0.5,
+        		touchpad = {
+        			natural_scroll = true,
+        			disable_while_typing = false,
+        		},
+        	},
+        	debug = {
+        		full_cm_proto = true,
+        	},
+        })
 
-        $mainMod = SUPER 
+        for i, _ in ipairs(languages) do
+        	hl.bind("SUPER + F" .. i, hl.dsp.exec_cmd("hyprctl switchxkblayout all " .. i - 1))
+        end
 
-        bind = $mainMod, Q, exec, $terminal
-        bind = $mainMod, C, killactive,
-        bind = $mainMod, M, exec, systemctl poweroff
-        bind = $mainMod, N, exec, systemctl reboot
-        bind = $mainMod, B, exec, $browser
-        bind = $mainMod, V, togglefloating,
-        bind = $mainMod, R, exec, $menu
-        bind = $mainMod, E, exec, rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0
-        bind = $mainMod, G, exec, rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"
-        bind = $mainMod, P, pseudo,
-        bind = $mainMod, SLASH, exec, hyprshot -z -m output -t 2000
-        bind = $mainMod, PERIOD, exec, hyprshot -z -m region -t 2000
+        -- Monitors
 
-        bind = $mainMod, T, exec, fish -c "hyprctl switchxkblayout all next && hyprctl devices -j | jq -r '.keyboards[1] | .active_keymap' | xargs -i% notify-send -t 2000 -h string:x-dunst-stack-tag:system-language System 'Switched layout to \"%\"'"
+        local function eval_external_res()
+        	local file_mode = read_content("/tmp/monitor-SDFD.txt")
+        	if file_mode == nil or file_mode ~= "1" then
+        		return "highres"
+        	else
+        		return "highrr"
+        	end
+        end
+        local modes = { "External only", "Mirror main" }
+        local mode = "External only"
+        local internal = "eDP-1"
+        local external = "HDMI-A-2"
+        local external_res = eval_external_res()
 
-        binde = $mainMod_SHIFT, right, resizeactive, 40 0
-        binde = $mainMod_SHIFT, left, resizeactive, -40 0
-        binde = $mainMod_SHIFT, up, resizeactive, 0 -40
-        binde = $mainMod_SHIFT, down, resizeactive, 0 40
+        hl.bind("SUPER + A", function()
+        	local file = io.open("/tmp/monitor-SDFD.txt", "w+")
+        	if not file then
+        		return
+        	end
+        	if external_res == "highres" then
+        		external_res = "highrr"
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		file:write("1"):flush()
+        	else
+        		external_res = "highres"
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		file:write("0"):flush()
+        	end
+        	file:close()
+        end)
 
-        bind = $mainMod, left, movefocus, l
-        bind = $mainMod, right, movefocus, r
-        bind = $mainMod, up, movefocus, u
-        bind = $mainMod, down, movefocus, d
+        if contains(hl.get_monitors(), function(_, mon)
+        	return mon.name == external
+        end) then
+        	if mode == "External only" then
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		hl.monitor({
+        			output = internal,
+        			disabled = true,
+        		})
+        	elseif mode == "Mirror main" then
+        		hl.monitor({
+        			output = external,
+        			mirror = internal,
+        			mode = "highrr",
+        		})
+        	end
+        else
+        	hl.monitor({
+        		output = internal,
+        		mode = "preferred",
+        	})
+        end
 
-        bind = $mainMod_CTRL, left, movewindow, l
-        bind = $mainMod_CTRL, right, movewindow, r
-        bind = $mainMod_CTRL, up, movewindow, u
-        bind = $mainMod_CTRL, down, movewindow, d
+        hl.on("monitor.added", function(m)
+        	if m.name == external then
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		hl.monitor({
+        			output = internal,
+        			disabled = true,
+        		})
+        	end
+        end)
 
-        bind = $mainMod, 1, workspace, 1
-        bind = $mainMod, 2, workspace, 2
-        bind = $mainMod, 3, workspace, 3
-        bind = $mainMod, 4, workspace, 4
-        bind = $mainMod, 5, workspace, 5
-        bind = $mainMod, 6, workspace, 6
-        bind = $mainMod, 7, workspace, 7
-        bind = $mainMod, 8, workspace, 8
-        bind = $mainMod, 9, workspace, 9
-        bind = $mainMod, 0, workspace, 10
-
-        bind = $mainMod SHIFT, 1, movetoworkspace, 1
-        bind = $mainMod SHIFT, 2, movetoworkspace, 2
-        bind = $mainMod SHIFT, 3, movetoworkspace, 3
-        bind = $mainMod SHIFT, 4, movetoworkspace, 4
-        bind = $mainMod SHIFT, 5, movetoworkspace, 5
-        bind = $mainMod SHIFT, 6, movetoworkspace, 6
-        bind = $mainMod SHIFT, 7, movetoworkspace, 7
-        bind = $mainMod SHIFT, 8, movetoworkspace, 8
-        bind = $mainMod SHIFT, 9, movetoworkspace, 9
-        bind = $mainMod SHIFT, 0, movetoworkspace, 10
-
-        bind = $mainMod, S, togglespecialworkspace, magic
-        bind = $mainMod SHIFT, S, movetoworkspace, special:magic
-
-        bind = $mainMod, mouse_down, workspace, e+1
-        bind = $mainMod, mouse_up, workspace, e-1
-
-        bindm = $mainMod, mouse:272, movewindow
-        bindm = $mainMod, mouse:273, resizewindow
-
-
-        bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-        bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-        bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-        bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-        bindel = ,XF86MonBrightnessUp, exec, brightnessctl s 10%+
-        bindel = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
-
-        bindl = , XF86AudioNext, exec, playerctl next
-        bindl = , XF86AudioPause, exec, playerctl play-pause
-        bindl = , XF86AudioPlay, exec, playerctl play-pause
-        bindl = , XF86AudioPrev, exec, playerctl previous
-
-        # bindl=,switch:on:Lid Switch,exec,hyprctl keyword monitor "eDP-1, disable"
-        # bindl=,switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1920x1080@144, auto, 1"
-
-        windowrule = match:class .*, suppress_event maximize
-
-        windowrule = match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0, no_initial_focus on
-        windowrule = match:class Aseprite, tile on
-        windowrule = match:class Minecraft.*, tile on
-        windowrule = match:class Cleanroom, tile on
-
-        bind = SUPER, Z, pass, class:^(com\.obsproject\.Studio)$
+        hl.on("monitor.removed", function(m)
+        	if m.name == external then
+        		hl.monitor({
+        			output = internal,
+        			disabled = false,
+        			mode = "preferred",
+        		})
+        	end
+        end)
       '';
   };
 

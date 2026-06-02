@@ -23,7 +23,6 @@ in
     hypridle
     hyprshot
     hyprsunset
-    inputs.hyprdynamicmonitors.packages.${system}.default
 
     # Terminal Tools
     wl-clipboard
@@ -134,8 +133,8 @@ in
     hyprland = {
       enable = true;
       withUWSM = true;
-      package = pkgs.hyprland;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      package = inputs.hyprland.packages.${system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
     };
     nano.enable = false;
   };
