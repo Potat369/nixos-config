@@ -16,6 +16,7 @@
 
   networking.hosts = {
     "10.0.0.1" = [
+      "gemini.google.com"
       "quillbot.com"
       "chatgpt.com"
       "deepai.org"

@@ -23,6 +23,7 @@ in
     hypridle
     hyprshot
     hyprsunset
+    swaybg
 
     # Terminal Tools
     wl-clipboard
@@ -133,8 +134,6 @@ in
     hyprland = {
       enable = true;
       withUWSM = true;
-      package = inputs.hyprland.packages.${system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
     };
     nano.enable = false;
   };

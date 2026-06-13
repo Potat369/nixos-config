@@ -13,7 +13,6 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
     stormy.url = "github:ashish0kumar/stormy";
   };
   outputs =

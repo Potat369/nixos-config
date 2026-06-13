@@ -167,7 +167,6 @@
         };
       };
     };
-
   };
 
   xdg.configFile."hypr/hyprsunset.conf".text = ''
@@ -218,7 +217,7 @@
         local terminal = "wezterm"
         local menu = string.format('rofi -show drun -run-command "%s"', app("{cmd}"))
         local browser = "zen"
-        local startup = { "dunst", "hyprsunset" }
+        local startup = { "dunst", "hyprsunset", "swaybg -i ${../wallpaper.png} -o \\*"}
         local languages = { "us", "fi", "ru", "ua" }
 
         hl.env("XCURSOR_SIZE", "20")
@@ -237,7 +236,7 @@
         hl.bind("SUPER + N", hl.dsp.exec_cmd("systemctl reboot"))
         hl.bind("SUPER + B", hl.dsp.exec_cmd(app(browser)))
         hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
-        hl.bind("SUPER + R", hl.dsp.exec_cmd(app(menu)))
+        hl.bind("SUPER + R", hl.dsp.exec_cmd(menu))
         hl.bind("SUPER + E", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0"))
         hl.bind("SUPER + G", hl.dsp.exec_cmd('rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"'))
         hl.bind("SUPER + SLASH", hl.dsp.exec_cmd("hyprshot -z -m output -t 2000"))
@@ -361,22 +360,28 @@
 
         -- Monitors
 
-        local function eval_external_res()
-        	local file_mode = read_content("/tmp/monitor-SDFD.txt")
-        	if file_mode == nil or file_mode ~= "1" then
-        		return "highres"
-        	else
-        		return "highrr"
-        	end
-        end
+        local filename = os.tmpname("/tmp/monitor-XXXXXX")
         local modes = { "External only", "Mirror main" }
         local mode = "External only"
         local internal = "eDP-1"
         local external = "HDMI-A-2"
-        local external_res = eval_external_res()
+        local external_res = "highres"
+
+        hl.on("config.reloaded", function()
+        	local file_mode = read_content()
+        	if file_mode == nil or file_mode ~= "1" then
+        		external_res = "highres"
+        	else
+        		external_res = "highrr"
+        	end
+        end)
+
+        hl.on("hyprland.shutdown", function()
+          os.remove(filename)
+        end)
 
         hl.bind("SUPER + A", function()
-        	local file = io.open("/tmp/monitor-SDFD.txt", "w+")
+        	local file = io.open(filename, "w+")
         	if not file then
         		return
         	end
@@ -410,6 +415,7 @@
         			output = internal,
         			disabled = true,
         		})
+            hl.dsp.focus({ workspace = 1 })
         	elseif mode == "Mirror main" then
         		hl.monitor({
         			output = external,
