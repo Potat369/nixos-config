@@ -114,15 +114,15 @@
 
       settings = {
         general = {
-          after_sleep_cmd = "hyprctl dispatch dpms on";
+          after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\"})'";
           ignore_dbus_inhibit = false;
         };
 
         listener = [
           {
             timeout = 300;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
+            on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"off\"})'";
+            on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\"})'";
           }
         ];
       };
@@ -191,10 +191,6 @@
     systemd.variables = [ "--all" ];
     extraConfig = # lua
       ''
-        local function app(cmd)
-        	return "runapp -- " .. cmd
-        end
-
         local function contains(table, predicate)
         	for i, item in pairs(table) do
         		if predicate(i, item) then
@@ -202,6 +198,102 @@
         		end
         	end
         	return false
+        end
+
+        local filename = os.tmpname("/tmp/monitor-XXXXXX")
+        local modes = { "External only", "Mirror main" }
+        local mode = "External only"
+        local internal = "eDP-1"
+        local external = "HDMI-A-2"
+        local external_res = "highres"
+
+        hl.on("config.reloaded", function()
+        	local file_mode = read_content()
+        	if file_mode == nil or file_mode ~= "1" then
+        		external_res = "highres"
+        	else
+        		external_res = "highrr"
+        	end
+        end)
+
+        hl.on("hyprland.shutdown", function()
+          os.remove(filename)
+        end)
+
+        hl.bind("SUPER + A", function()
+        	local file = io.open(filename, "w+")
+        	if not file then
+        		return
+        	end
+        	if external_res == "highres" then
+        		external_res = "highrr"
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		file:write("1"):flush()
+        	else
+        		external_res = "highres"
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		file:write("0"):flush()
+        	end
+        	file:close()
+        end)
+
+        if contains(hl.get_monitors(), function(_, mon)
+        	return mon.name == external
+        end) then
+        	if mode == "External only" then
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		hl.monitor({
+        			output = internal,
+        			disabled = true,
+        		})
+            hl.dsp.focus({ workspace = 1 })
+        	elseif mode == "Mirror main" then
+        		hl.monitor({
+        			output = external,
+        			mirror = internal,
+        			mode = "highrr",
+        		})
+        	end
+        else
+        	hl.monitor({
+        		output = internal,
+        		mode = "preferred",
+        	})
+        end
+
+        hl.on("monitor.added", function(m)
+        	if m.name == external then
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
+        		hl.monitor({
+        			output = internal,
+        			disabled = true,
+        		})
+        	end
+        end)
+
+        hl.on("monitor.removed", function(m)
+        	if m.name == external then
+        		hl.monitor({
+        			output = internal,
+        			disabled = false,
+        			mode = "preferred",
+        		})
+        	end
+        end)
+        local function app(cmd)
+        	return "runapp -- " .. cmd
         end
 
         local function read_content(filename)
@@ -222,7 +314,6 @@
 
         hl.env("XCURSOR_SIZE", "20")
         hl.env("HYPRCURSOR_SIZE", "20")
-        hl.env("HYPRSHOT_DIR", "$HOME/Pictures/Screenshots/")
 
         hl.on("hyprland.start", function()
         	for _, cmd in ipairs(startup) do
@@ -243,10 +334,10 @@
         hl.bind("SUPER + PERIOD", hl.dsp.exec_cmd("hyprshot -z -m region -t 2000"))
         hl.bind("SUPER + Z", hl.dsp.exec_cmd("pass class:^(com\\.obsproject\\.Studio)$"))
 
-        hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 40, y = 0 }), { repeating = true })
-        hl.bind("SUPER + SHIFT + left", hl.dsp.window.resize({ x = -40, y = 0 }), { repeating = true })
-        hl.bind("SUPER + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -40 }), { repeating = true })
-        hl.bind("SUPER + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 40 }), { repeating = true })
+        hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 40, y = 0, relative = true }), { repeating = true })
+        hl.bind("SUPER + SHIFT + left", hl.dsp.window.resize({ x = -40, y = 0, relative = true }), { repeating = true })
+        hl.bind("SUPER + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -40, relative = true }), { repeating = true })
+        hl.bind("SUPER + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 40, relative = true }), { repeating = true })
 
         hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }))
         hl.bind("SUPER + right", hl.dsp.focus({ direction = "r" }))
@@ -357,101 +448,6 @@
         for i, _ in ipairs(languages) do
         	hl.bind("SUPER + F" .. i, hl.dsp.exec_cmd("hyprctl switchxkblayout all " .. i - 1))
         end
-
-        -- Monitors
-
-        local filename = os.tmpname("/tmp/monitor-XXXXXX")
-        local modes = { "External only", "Mirror main" }
-        local mode = "External only"
-        local internal = "eDP-1"
-        local external = "HDMI-A-2"
-        local external_res = "highres"
-
-        hl.on("config.reloaded", function()
-        	local file_mode = read_content()
-        	if file_mode == nil or file_mode ~= "1" then
-        		external_res = "highres"
-        	else
-        		external_res = "highrr"
-        	end
-        end)
-
-        hl.on("hyprland.shutdown", function()
-          os.remove(filename)
-        end)
-
-        hl.bind("SUPER + A", function()
-        	local file = io.open(filename, "w+")
-        	if not file then
-        		return
-        	end
-        	if external_res == "highres" then
-        		external_res = "highrr"
-        		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		file:write("1"):flush()
-        	else
-        		external_res = "highres"
-        		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		file:write("0"):flush()
-        	end
-        	file:close()
-        end)
-
-        if contains(hl.get_monitors(), function(_, mon)
-        	return mon.name == external
-        end) then
-        	if mode == "External only" then
-        		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		hl.monitor({
-        			output = internal,
-        			disabled = true,
-        		})
-            hl.dsp.focus({ workspace = 1 })
-        	elseif mode == "Mirror main" then
-        		hl.monitor({
-        			output = external,
-        			mirror = internal,
-        			mode = "highrr",
-        		})
-        	end
-        else
-        	hl.monitor({
-        		output = internal,
-        		mode = "preferred",
-        	})
-        end
-
-        hl.on("monitor.added", function(m)
-        	if m.name == external then
-        		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		hl.monitor({
-        			output = internal,
-        			disabled = true,
-        		})
-        	end
-        end)
-
-        hl.on("monitor.removed", function(m)
-        	if m.name == external then
-        		hl.monitor({
-        			output = internal,
-        			disabled = false,
-        			mode = "preferred",
-        		})
-        	end
-        end)
       '';
   };
 

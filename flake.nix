@@ -6,7 +6,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     treesitter.url = "github:tree-sitter/tree-sitter";
     zen-browser = {

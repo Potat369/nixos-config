@@ -16,8 +16,11 @@ in
     prismlauncher
     libreoffice-qt6-fresh
     inputs.zen-browser.packages.${system}.default
+    microsoft-edge
     aseprite
     vesktop
+    mangohud
+    blockbench
 
     # Hyprland
     hypridle
@@ -26,6 +29,7 @@ in
     swaybg
 
     # Terminal Tools
+    wiremix
     wl-clipboard
     cloudflared
     inputs.stormy.packages.${system}.default
@@ -44,6 +48,7 @@ in
   ];
 
   programs = {
+    gamemode.enable = true;
     bash.interactiveShellInit = "unset HISTFILE";
     obs-studio = {
       enable = true;
