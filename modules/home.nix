@@ -43,10 +43,13 @@
           end)
 
           local config = {
+            window_content_alignment = {
+              horizontal = "Center",
+              vertical = "Center",
+            },
           	font_size = 13,
             warn_about_missing_glyphs = false,
           	font = wezterm.font("DejaVu Sans Mono"),
-          	force_reverse_video_cursor = true,
           	use_fancy_tab_bar = false,
             tab_max_width = 100,
           	window_padding = {
@@ -102,7 +105,7 @@
       theme = "Arc-Dark";
       plugins = with pkgs; [ rofi-calc ];
       extraConfig = {
-
+        drun-match-fields = "name,generic";
         show-icons = true;
       };
     };
@@ -162,7 +165,7 @@
           foreground = "#c4746e";
           highlight = "#c4746e";
           frame_color = "#00000000";
-          timeout = 0;
+          timeout = 300;
           override_pause_level = 60;
         };
       };
@@ -248,14 +251,13 @@
         end) then
         	if mode == "External only" then
         		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		hl.monitor({
         			output = internal,
         			disabled = true,
         		})
-            hl.dsp.focus({ workspace = 1 })
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
+        		})
         	elseif mode == "Mirror main" then
         		hl.monitor({
         			output = external,
@@ -273,12 +275,12 @@
         hl.on("monitor.added", function(m)
         	if m.name == external then
         		hl.monitor({
-        			output = external,
-        			mode = external_res,
-        		})
-        		hl.monitor({
         			output = internal,
         			disabled = true,
+        		})
+        		hl.monitor({
+        			output = external,
+        			mode = external_res,
         		})
         	end
         end)
@@ -332,7 +334,7 @@
         hl.bind("SUPER + G", hl.dsp.exec_cmd('rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"'))
         hl.bind("SUPER + SLASH", hl.dsp.exec_cmd("hyprshot -z -m output -t 2000"))
         hl.bind("SUPER + PERIOD", hl.dsp.exec_cmd("hyprshot -z -m region -t 2000"))
-        hl.bind("SUPER + Z", hl.dsp.exec_cmd("pass class:^(com\\.obsproject\\.Studio)$"))
+        hl.bind("SUPER + Z", hl.dsp.pass({ window = "class:^(com\\.obsproject\\.Studio)$" }))
 
         hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 40, y = 0, relative = true }), { repeating = true })
         hl.bind("SUPER + SHIFT + left", hl.dsp.window.resize({ x = -40, y = 0, relative = true }), { repeating = true })
@@ -450,5 +452,4 @@
         end
       '';
   };
-
 }

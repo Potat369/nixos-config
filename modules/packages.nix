@@ -12,15 +12,11 @@ in
 {
   environment.systemPackages = with pkgs; [
     wezterm
-    obsidian
     prismlauncher
-    libreoffice-qt6-fresh
+    #libreoffice-qt6-fresh
     inputs.zen-browser.packages.${system}.default
-    microsoft-edge
-    aseprite
     vesktop
-    mangohud
-    blockbench
+    aseprite
 
     # Hyprland
     hypridle
@@ -48,7 +44,8 @@ in
   ];
 
   programs = {
-    gamemode.enable = true;
+    droidcam.enable = false;
+    gamemode.enable = false;
     bash.interactiveShellInit = "unset HISTFILE";
     obs-studio = {
       enable = true;
@@ -123,13 +120,9 @@ in
       enable = true;
     };
     idea = {
-      enable = true;
+      enable = false;
       patchedMinecraftEntry = true;
       package = pkgs.jetbrains.idea;
-    };
-    java = {
-      enable = true;
-      package = pkgs.jdk25;
     };
     rider = {
       enable = false;
@@ -138,6 +131,8 @@ in
     };
     hyprland = {
       enable = true;
+      package = unstable.hyprland;
+      portalPackage = unstable.xdg-desktop-portal-hyprland;
       withUWSM = true;
     };
     nano.enable = false;

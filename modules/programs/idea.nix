@@ -19,6 +19,8 @@ let
             libpulseaudio
             openal
             udev
+            libXxf86vm
+            libGL
             flite
           ];
         in
