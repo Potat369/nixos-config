@@ -1,22 +1,19 @@
 {
   pkgs,
-  config,
   unstable,
   inputs,
   system,
   ...
 }:
-let
-  user = config.users.users.potat369;
-in
 {
   environment.systemPackages = with pkgs; [
     wezterm
     prismlauncher
     #libreoffice-qt6-fresh
     inputs.zen-browser.packages.${system}.default
-    vesktop
+    unstable.discord
     aseprite
+    koreader
 
     # Hyprland
     hypridle
@@ -44,6 +41,10 @@ in
   ];
 
   programs = {
+    stow = {
+      enable = true;
+      autoSync = true;
+    };
     droidcam.enable = false;
     gamemode.enable = false;
     bash.interactiveShellInit = "unset HISTFILE";
@@ -70,6 +71,7 @@ in
           end
 
           set DIRENV_WARN_TIMEOUT 0
+          set _JAVA_OPTIONS "-Djava.util.prefs.userRoot=$HOME/.config/java"
 
           function y
             set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -110,11 +112,6 @@ in
         stylua
       ];
       package = pkgs.neovim-unwrapped;
-      pullConfig = {
-        enable = true;
-        repo = "https://github.com/Potat369/nvim-config";
-        user = user;
-      };
     };
     ddcutil = {
       enable = true;

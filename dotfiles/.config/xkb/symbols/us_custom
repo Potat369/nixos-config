@@ -1,0 +1,6 @@
+default partial alphanumeric_keys
+xkb_symbols "us_tilde" {
+    include "us(basic)"
+    name[Group1] = "English (US Custom Tilde)";
+    key <LSGT> { [ grave, asciitilde, grave, asciitilde ] };
+};

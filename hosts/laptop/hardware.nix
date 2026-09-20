@@ -15,6 +15,8 @@
     "ahci"
     "nvme"
     "usbhid"
+    "usb_storage"
+    "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -23,7 +25,7 @@
   hardware.bluetooth.enable = false;
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/24f42d0d-e5f4-407f-867f-ea0e38b2af9f";
+    device = "/dev/disk/by-uuid/fb7ac5e3-663c-456b-8e8f-cd586d45769d";
     fsType = "ext4";
   };
 

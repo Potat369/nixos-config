@@ -1,35 +1,23 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ pkgs, ... }:
 {
   nixpkgs.config.allowUnfree = true;
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    auto-optimise-store = true;
-  };
-
-  networking.hosts = {
-    "10.0.0.1" = [
-      "quillbot.com"
-      "chatgpt.com"
-      "deepai.org"
-      "duck.ai"
-      "chat.deepseek.com"
-      "grok.com"
-      "claude.ai"
-      "copilot.microsoft.com"
-    ];
+  nix = {
+    channel.enable = false;
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+      use-xdg-base-directories = true;
+    };
   };
 
   boot.kernelParams = [ "drm_kms_helper.poll=1" ];
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 30;
+  };
   boot.loader = {
-
     systemd-boot.enable = true;
     timeout = 3;
     efi.canTouchEfiVariables = true;
@@ -57,16 +45,13 @@
           "org/gnome/desktop/interface" = {
             color-scheme = "prefer-dark";
           };
-          "org/gtk/settings/file-chooser" = {
-            sort-directories-first = "true";
-            startup-mode = "cwd";
-            sort-column = "name";
-            show-hidden = "false";
-            sort-order = "ascending";
-          };
         };
       }
     ];
+  };
+  environment.sessionVariables = {
+    GTK_USE_PORTAL = 1;
+    NIXOS_OZONE_WL = 1;
   };
 
   hardware.i2c.enable = true;

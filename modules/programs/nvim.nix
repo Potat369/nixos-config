@@ -14,21 +14,6 @@ in
       default = false;
     };
 
-    pullConfig = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-
-      repo = lib.mkOption {
-        type = lib.types.str;
-      };
-
-      user = lib.mkOption {
-        type = lib.types.attrs;
-      };
-    };
-
     defaultEditor = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -67,25 +52,9 @@ in
         cfg.package;
 
     environment.systemPackages = [
-      (lib.mkIf cfg.pullConfig.enable (pkgs.git))
       cfg.finalPackage
     ];
 
     environment.sessionVariables.EDITOR = lib.mkIf cfg.defaultEditor (lib.mkOverride 900 "nvim");
-
-    system.activationScripts.setupNeovim = lib.mkIf cfg.pullConfig.enable (
-      let
-        configDir = "${cfg.pullConfig.user.home}/.config/nvim";
-      in
-      ''
-        if [ ! -d ${configDir} ]; then
-           echo "Pulling Neovim config..."
-           ${pkgs.git}/bin/git clone ${cfg.pullConfig.repo} ${configDir}
-           chown -R ${cfg.pullConfig.user.name}:users ${configDir}
-        else
-            echo "Neovim config found..."
-        fi
-      ''
-    );
   };
 }

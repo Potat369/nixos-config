@@ -6,5 +6,6 @@
     ./rider.nix
     ./nvim.nix
     ./ddcutil.nix
+    ./stow.nix
   ];
 }

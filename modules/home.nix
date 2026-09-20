@@ -24,80 +24,9 @@
   };
 
   programs = {
-    wezterm = {
-      enable = true;
-      extraConfig = # lua
-        ''
-          wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-          	local process_name = tab.active_pane.foreground_process_name or ""
-          	process_name = process_name:match("([^/\\]+)$") or process_name
-
-            process_name = process_name:match("%.(.+)-wrapped") or process_name
-
-          	local index = tostring(tab.tab_index + 1)
-
-          	local title = process_name == "" and index or (index .. ": " .. process_name)
-          	return {
-          		{ Text = " " .. title .. " " },
-          	}
-          end)
-
-          local config = {
-            window_content_alignment = {
-              horizontal = "Center",
-              vertical = "Center",
-            },
-          	font_size = 13,
-            warn_about_missing_glyphs = false,
-          	font = wezterm.font("DejaVu Sans Mono"),
-          	use_fancy_tab_bar = false,
-            tab_max_width = 100,
-          	window_padding = {
-          		left = 0,
-          		right = 0,
-          		top = 0,
-          		bottom = 0,
-          	},
-          	keys = {
-          		{ key = "1", mods = "ALT", action = wezterm.action.ActivateTab(0) },
-          		{ key = "2", mods = "ALT", action = wezterm.action.ActivateTab(1) },
-          		{ key = "3", mods = "ALT", action = wezterm.action.ActivateTab(2) },
-          		{ key = "4", mods = "ALT", action = wezterm.action.ActivateTab(3) },
-          		{ key = "5", mods = "ALT", action = wezterm.action.ActivateTab(4) },
-          		{ key = "6", mods = "ALT", action = wezterm.action.ActivateTab(5) },
-          		{ key = "7", mods = "ALT", action = wezterm.action.ActivateTab(6) },
-          		{ key = "8", mods = "ALT", action = wezterm.action.ActivateTab(7) },
-          		{ key = "9", mods = "ALT", action = wezterm.action.ActivateTab(8) },
-          	},
-          }
-
-          return config
-        '';
-    };
-
     tealdeer = {
       enable = true;
       enableAutoUpdates = true;
-    };
-
-    git = {
-      enable = true;
-      settings = {
-        init = {
-          defaultBranch = "main";
-        };
-        user = {
-          name = "Potat369";
-          email = "yevheniidemian@gmail.com";
-        };
-        alias = {
-          tree = "log --oneline --graph --decorate --all";
-          cm = "commit -m";
-        };
-        credential."https://github.com" = {
-          helper = "!/run/current-system/sw/bin/gh auth git-credential";
-        };
-      };
     };
 
     rofi = {
@@ -172,20 +101,28 @@
     };
   };
 
+  xdg.userDirs.enable = true;
+
   xdg.configFile."hypr/hyprsunset.conf".text = ''
     max-gamma = 150
 
-    profile = [
-      {
-        time = "6:00";
-        identity = true;
-      }
-      {
-        time = "19:00";
-        temperature = 4500;
-        gamma = 1;
-      }
-    ]
+    profile {
+        time = 7:30
+        temperature = 6000
+        identity = true
+    }
+
+    profile {
+        time = 21:00
+        temperature = 5000
+        gamma = 0.9
+    }     
+
+    profile {
+        time = 22:00
+        temperature = 4000
+        gamma = 0.8
+    }     
   '';
 
   wayland.windowManager.hyprland = {
@@ -332,8 +269,9 @@
         hl.bind("SUPER + R", hl.dsp.exec_cmd(menu))
         hl.bind("SUPER + E", hl.dsp.exec_cmd("rofi -show calc -modi calc -no-show-match -no-sort -no-history -lines 0"))
         hl.bind("SUPER + G", hl.dsp.exec_cmd('rofi -show drun -run-command "runapp -- nvidia-offload {cmd}"'))
-        hl.bind("SUPER + SLASH", hl.dsp.exec_cmd("hyprshot -z -m output -t 2000"))
-        hl.bind("SUPER + PERIOD", hl.dsp.exec_cmd("hyprshot -z -m region -t 2000"))
+        local generic_screenshot = "hyprshot -t 2000 -o $HOME/Pictures/Screenshots "
+        hl.bind("SUPER + SLASH", hl.dsp.exec_cmd(generic_screenshot .. "-m output"))
+        hl.bind("SUPER + PERIOD", hl.dsp.exec_cmd(generic_screenshot .. "-z -m region"))
         hl.bind("SUPER + Z", hl.dsp.pass({ window = "class:^(com\\.obsproject\\.Studio)$" }))
 
         hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 40, y = 0, relative = true }), { repeating = true })
@@ -401,7 +339,7 @@
         		gaps_out = 4,
         		border_size = 0,
         		resize_on_border = false,
-        		allow_tearing = false,
+        		allow_tearing = true,
         		layout = "dwindle",
         	},
         	decoration = {
