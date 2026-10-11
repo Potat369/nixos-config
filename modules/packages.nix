@@ -13,7 +13,6 @@
     inputs.zen-browser.packages.${system}.default
     unstable.discord
     aseprite
-    koreader
 
     # Hyprland
     hypridle
@@ -86,12 +85,15 @@
           set -g fish_color_autosuggestion "#625e5a"
 
           function ls --wraps=ls
-            LC_COLLATE=C command ls -AF --group-directories-first --color=never -w 80 $argv
+            LC_COLLATE=C command ls -AFxv --group-directories-first --color=never --width=$COLUMNS $argv | string replace -r -a '(?<=^|\s)(\.\S+[\/@]?)' "\e[38;5;242m\$1\e[0m"
           end
 
           function npm --wraps=npm
             pnpm $argv
           end
+
+          abbr -a cb ddcutil --skip-ddc-checks --noverify setvcp 10 
+          abbr -a nr sudo nixos-rebuild switch --flake ~/nixos-config#laptop
         '';
       promptInit = # fish
         ''
@@ -117,9 +119,9 @@
       enable = true;
     };
     idea = {
-      enable = false;
+      enable = true;
       patchedMinecraftEntry = true;
-      package = pkgs.jetbrains.idea;
+      package = unstable.jetbrains.idea;
     };
     rider = {
       enable = false;

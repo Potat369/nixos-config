@@ -67,7 +67,7 @@
           separator_height = 4;
           padding = 4;
           horizontal_padding = 4;
-          font = "DejaVu Sans Mono 12";
+          font = "DejaVuSansM Nerd Font 12";
           corner_radius = 4;
           progress_bar_corner_radius = 4;
           offset = "(8, 8)";
@@ -103,27 +103,34 @@
 
   xdg.userDirs.enable = true;
 
-  xdg.configFile."hypr/hyprsunset.conf".text = ''
-    max-gamma = 150
+  xdg.configFile."hypr/hyprsunset.conf".text = # hyprlang
+    ''
+      max-gamma = 150
 
-    profile {
-        time = 7:30
-        temperature = 6000
-        identity = true
-    }
+      profile {
+          time = 7:30
+          temperature = 6000
+          identity = true
+      }
 
-    profile {
-        time = 21:00
-        temperature = 5000
-        gamma = 0.9
-    }     
+      profile {
+          time = 21:00
+          temperature = 5000
+          gamma = 0.9
+      }     
 
-    profile {
-        time = 22:00
+      profile {
+          time = 22:00
+          temperature = 4000
+          gamma = 0.8
+      }     
+
+      profile {
+        time = 0:00
         temperature = 4000
-        gamma = 0.8
-    }     
-  '';
+        gamma = 0.7
+      }
+    '';
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -248,7 +255,7 @@
         local terminal = "wezterm"
         local menu = string.format('rofi -show drun -run-command "%s"', app("{cmd}"))
         local browser = "zen"
-        local startup = { "dunst", "hyprsunset", "swaybg -i ${../wallpaper.png} -o \\*"}
+        local startup = { "hyprsunset", "swaybg -i ${../wallpaper.png} -o \\*"}
         local languages = { "us", "fi", "ru", "ua" }
 
         hl.env("XCURSOR_SIZE", "20")
@@ -361,7 +368,7 @@
         		disable_hyprland_logo = true,
         		disable_splash_rendering = true,
         		disable_watchdog_warning = true,
-        		font_family = "DejaVu Sans Mono",
+        		font_family = "DejaVuSansM Nerd Font",
         		enable_anr_dialog = false,
         		background_color = "0x000",
         	},

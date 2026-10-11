@@ -58,9 +58,9 @@
 
             home-manager.users.potat369 = import ./modules/home.nix;
           }
-          ({ ... }: {
+          {
             nix.registry.nixpkgs.flake = inputs.nixpkgs;
-          })
+          }
         ];
       };
     };

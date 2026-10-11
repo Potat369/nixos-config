@@ -19,9 +19,9 @@ local config = {
 		horizontal = "Center",
 		vertical = "Center",
 	},
-	font_size = 13,
+	font_size = 16,
 	warn_about_missing_glyphs = false,
-	font = wezterm.font("DejaVu Sans Mono"),
+	font = wezterm.font("DejaVuSansM Nerd Font Mono"),
 	use_fancy_tab_bar = false,
 	tab_max_width = 100,
 	window_padding = {
