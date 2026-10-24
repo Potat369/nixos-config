@@ -109,7 +109,7 @@
         inputs.treesitter.packages.${system}.cli
         nil
         nixfmt
-        lua-language-server
+        emmylua-ls
         gcc
         stylua
       ];
@@ -119,14 +119,14 @@
       enable = true;
     };
     idea = {
-      enable = true;
+      enable = false;
       patchedMinecraftEntry = true;
       package = unstable.jetbrains.idea;
     };
     rider = {
       enable = false;
       patchedTMLEntry = true;
-      package = pkgs.jetbrains.rider;
+      package = unstable.jetbrains.rider;
     };
     hyprland = {
       enable = true;

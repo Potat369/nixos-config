@@ -24,7 +24,7 @@
     let
       system = "x86_64-linux";
       unstable = import nixpkgs-unstable {
-        system = system;
+        inherit system;
         config.allowUnfree = true;
       };
     in
@@ -40,7 +40,7 @@
       };
 
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
-        system = system;
+        inherit system;
         specialArgs = {
           inherit
             unstable
@@ -53,10 +53,11 @@
           inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = false;
-
-            home-manager.users.potat369 = import ./modules/home.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = false;
+              users.potat369 = import ./modules/home.nix;
+            };
           }
           {
             nix.registry.nixpkgs.flake = inputs.nixpkgs;

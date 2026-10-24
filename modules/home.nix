@@ -34,7 +34,7 @@
       theme = "Arc-Dark";
       plugins = with pkgs; [ rofi-calc ];
       extraConfig = {
-        drun-match-fields = "name,generic";
+        drun-match-fields = "name";
         show-icons = true;
       };
     };

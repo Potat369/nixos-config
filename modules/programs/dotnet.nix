@@ -20,7 +20,7 @@ in
 
   config =
     let
-      finalPkg = (pkgs.dotnetCorePackages.combinePackages cfg.sdks);
+      finalPkg = pkgs.dotnetCorePackages.combinePackages cfg.sdks;
     in
     lib.mkIf cfg.enable {
       environment = {
