@@ -9,6 +9,8 @@
   environment.systemPackages = with pkgs; [
     wezterm
     prismlauncher
+    godot
+    lutris
     #libreoffice-qt6-fresh
     inputs.zen-browser.packages.${system}.default
     unstable.discord

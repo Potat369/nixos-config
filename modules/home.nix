@@ -9,7 +9,7 @@
     stateVersion = "26.05";
     homeDirectory = "/home/potat369";
 
-    file."projects/tmodloader".source =
+    file."dev/tmodloader".source =
       config.lib.file.mkOutOfStoreSymlink /home/potat369/.local/share/Terraria/tModLoader/ModSources;
 
     pointerCursor = {

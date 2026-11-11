@@ -4,7 +4,7 @@
     enableDefaultPackages = lib.mkForce false;
     fontconfig = {
       defaultFonts = {
-        monospace = [ "DejaVuSansM Nerd Font" ];
+        monospace = [ "Liberation Mono" ];
         sansSerif = [ "Liberation Sans" ];
       };
     };

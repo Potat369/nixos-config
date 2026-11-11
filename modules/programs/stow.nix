@@ -30,7 +30,7 @@ in
     environment.systemPackages = [ cfg.package ];
 
     system.userActivationScripts.syncStow = lib.mkIf cfg.autoSync ''
-      ${cfg.package}/bin/stow -d /home/potat369/nixos-config/dotfiles/ -t /home/potat369 ./
+      ${cfg.package}/bin/stow -d /home/potat369/nixos-config/configs -t /home/potat369/.config ./
     '';
   };
 }
